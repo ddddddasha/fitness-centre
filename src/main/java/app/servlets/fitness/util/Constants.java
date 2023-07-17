@@ -3,7 +3,7 @@ package app.servlets.fitness.util;
 public class Constants {
 
     public static final String EMAIL_REGEX = "[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,4}";
-    
+
     public static final String LOGIN_URL = "/login";
     public static final String ADMIN_READ_USERS_URL = "/admin/users";
     public static final String SUBSCRIPTIONS_URL = "/subscription";
@@ -80,15 +80,15 @@ public class Constants {
     public static final String PASSWORD_KEY = "db.password";
 
 
-    public static final String INSERT_INTO_PERSON_TABLE = "INSERT INTO person (id, first_name, last_name, age, login, password, role) VALUES (?,?,?,?,?,?,?)";
+    public static final String INSERT_INTO_PERSON_TABLE = "INSERT INTO person (first_name, last_name, age, login, password, role) VALUES (?,?,?,?,?,?)";
     public static final String SELECT_FROM_PERSON_TABLE = "SELECT * FROM person";
     public static final String SELECT_DATA_FROM_PERSON_BY_LOGIN = "SELECT first_name, last_name, age, password, role FROM person WHERE login=?";
     public static final String DELETE_FROM_PERSON_BY_ID = "DELETE FROM person WHERE id=?";
     public static final String SELECT_DATA_FROM_PERSON_BY_ID = "SELECT first_name, last_name, age, login, password FROM person WHERE id=?";
     public static final String UPDATE_PERSON_BY_ID = "UPDATE person SET first_name=?, last_name=?, age=?, login=? WHERE id=?";
     public static final String SELECT_COUNT_FROM_PERSON_BY_ID = "SELECT COUNT(*) FROM person WHERE id = ?";
-    public static final String INSERT_INTO_SUBSCRIPTION_TABLE = "INSERT INTO subscription (id, subscription_category, subscription_name, subscription_price, subscription_period,\n" +
-            "                                             number_of_guest_visits, max_subscription_stop, description) VALUES (?,?,?,?,?,?,?,?)";
+    public static final String INSERT_INTO_SUBSCRIPTION_TABLE = "INSERT INTO subscription (subscription_category, subscription_name, subscription_price, subscription_period,\n" +
+            "                                             number_of_guest_visits, max_subscription_stop, description) VALUES (?,?,?,?,?,?,?)";
     public static final String SELECT_FROM_SUBSCRIPTION = "SELECT * FROM subscription";
     public static final String SELECT_FROM_SUBSCRIPTION_BY_SUBSCRIPTION_CATEGORY = "SELECT * FROM subscription WHERE subscription_category=?";
     public static final String SELECT_DATA_FROM_SUBSCRIPTION_BY_ID = "SELECT subscription_name, subscription_price, subscription_period,\n" +
