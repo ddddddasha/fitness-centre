@@ -1,5 +1,6 @@
 package app.servlets.fitness.entities;
 
+import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Subscription {
-    private String id;
-    private String subscriptionCategory;
+    private long id;
+    private SubscriptionCategory subscriptionCategory;
     private String subscriptionName;
     private int subscriptionPrice;
-    private int subscriptionPeriod;
-    private int numberOfGuestVisits;
-    private int maxSubscriptionStop;
+    private int subscriptionDaysNumber;
+    private int numberGuestVisitDays;
+    private int numberSubscriptionStopDays;
     private String description;
 }

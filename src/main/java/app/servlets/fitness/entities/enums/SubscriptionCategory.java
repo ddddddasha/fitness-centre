@@ -5,9 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Role {
-    ADMIN("ADMIN"),
-    CLIENT("CLIENT");
+public enum SubscriptionCategory {
+    GYM("GYM"),
+    YOGA("YOGA"),
+    PILATES("PILATES"),
+    SPA("SPA");
 
     private final String name;
 }
