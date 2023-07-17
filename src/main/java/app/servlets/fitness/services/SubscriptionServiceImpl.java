@@ -1,27 +1,28 @@
 package app.servlets.fitness.services;
 
 import app.servlets.fitness.entities.Subscription;
+import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import app.servlets.fitness.repositories.SubscriptionRepository;
-import app.servlets.fitness.repositories.SubscriptionRepositoryImpl;
+import lombok.Builder;
 
 import java.util.List;
-import java.util.UUID;
 
+@Builder
 public class SubscriptionServiceImpl implements SubscriptionService{
-    private final SubscriptionRepository subscriptionRepository = new SubscriptionRepositoryImpl();
+    private final SubscriptionRepository subscriptionRepository;
 
     @Override
     public Subscription createSubscription(Subscription subscription) {
         return subscriptionRepository.createSubscription(
-                new Subscription(generateUniqueId(), subscription.getSubscriptionCategory(), subscription.getSubscriptionName(),
-                        subscription.getSubscriptionPrice(), subscription.getSubscriptionPeriod(),
-                        subscription.getNumberOfGuestVisits(), subscription.getMaxSubscriptionStop(),
+                new Subscription(subscription.getId(), subscription.getSubscriptionCategory(), subscription.getSubscriptionName(),
+                        subscription.getSubscriptionPrice(), subscription.getSubscriptionDaysNumber(),
+                        subscription.getNumberGuestVisitDays(), subscription.getNumberSubscriptionStopDays(),
                         subscription.getDescription())
         );
     }
 
     @Override
-    public Subscription getById(String id) {
+    public Subscription getById(long id) {
         return subscriptionRepository.getById(id);
     }
 
@@ -31,7 +32,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public boolean deleteById(long id) {
         return subscriptionRepository.deleteById(id);
     }
 
@@ -41,22 +42,12 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     }
 
     @Override
-    public boolean isIdExistsInDatabase(String id) {
-        return subscriptionRepository.isIdExistsInDatabase(id);
-    }
-
-    @Override
-    public List<Subscription> findBySubscriptionCategory(String subscriptionCategory) {
+    public List<Subscription> findBySubscriptionCategory(SubscriptionCategory subscriptionCategory) {
         return subscriptionRepository.findBySubscriptionCategory(subscriptionCategory);
     }
 
-    private String generateUniqueId() {
-        UUID uuid = UUID.randomUUID();
-        String id = uuid.toString();
-        while (isIdExistsInDatabase(id)) {
-            uuid = UUID.randomUUID();
-            id = uuid.toString();
-        }
-        return id;
+    @Override
+    public SubscriptionCategory determineSubscriptionCategory(String category) {
+        return subscriptionRepository.determineSubscriptionCategory(category);
     }
 }

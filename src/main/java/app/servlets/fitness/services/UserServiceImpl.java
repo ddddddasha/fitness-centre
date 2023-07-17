@@ -3,22 +3,23 @@ package app.servlets.fitness.services;
 import app.servlets.fitness.entities.User;
 import app.servlets.fitness.entities.enums.Role;
 import app.servlets.fitness.repositories.UserRepository;
-import app.servlets.fitness.repositories.UserRepositoryImpl;
+
 import app.servlets.fitness.util.PasswordHashing;
+import lombok.Builder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+@Builder
 public class UserServiceImpl implements UserService{
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final UserRepository userRepository;
     private final PasswordHashing passwordHashing = new PasswordHashing();
 
     @Override
     public User createUser(User user) {
         return userRepository.createUser(
-                new User(generateUniqueId(), user.getFirstName(), user.getLastName(),
-                        user.getAge(), user.getLogin(), passwordHashing.hashPassword(user.getPassword()), Role.CLIENT.name())
+                new User(user.getId(), user.getFirstName(), user.getLastName(),
+                        user.getDateBirthday(), user.getLogin(), passwordHashing.hashPassword(user.getPassword()), Role.CLIENT)
         );
     }
 
@@ -33,12 +34,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public boolean deleteById(long id) {
         return userRepository.deleteById(id);
     }
 
     @Override
-    public User getById(String id) {
+    public User getById(long id) {
         return userRepository.getById(id);
     }
 
@@ -48,24 +49,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean isIdExistsInDatabase(String id) {
-        return userRepository.isIdExistsInDatabase(id);
-    }
-
-    @Override
     public User logIn(String login, String password) {
         return Optional.ofNullable(userRepository.getByLogin(login))
                 .filter(user -> passwordHashing.verifyPassword(password, user.getPassword()))
                 .orElse(null);
-    }
-
-    private String generateUniqueId() {
-        UUID uuid = UUID.randomUUID();
-        String id = uuid.toString();
-        while (isIdExistsInDatabase(id)) {
-            uuid = UUID.randomUUID();
-            id = uuid.toString();
-        }
-        return id;
     }
 }
