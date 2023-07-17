@@ -8,6 +8,7 @@ import app.servlets.fitness.repositories.UserRepository;
 import app.servlets.fitness.repositories.UserRepositoryImpl;
 
 public class RepositoryCreator {
+
     public UserRepository buildUserRepository() {
         return UserRepositoryImpl.builder()
                 .userMapper(new UserMapper())

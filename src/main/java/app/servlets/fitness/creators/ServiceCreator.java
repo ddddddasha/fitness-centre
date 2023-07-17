@@ -6,6 +6,7 @@ import app.servlets.fitness.services.UserService;
 import app.servlets.fitness.services.UserServiceImpl;
 
 public class ServiceCreator {
+    
     public UserService buildUserService() {
         RepositoryCreator creator = new RepositoryCreator();
         return UserServiceImpl.builder()
