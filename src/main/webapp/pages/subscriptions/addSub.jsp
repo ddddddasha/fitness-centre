@@ -20,7 +20,12 @@
 
         <div class="mb-3">
             <label for="subscriptionCategory" class="form-label">Тип абонемента:</label>
-            <input type="text" id="subscriptionCategory" name="subscriptionCategory" class="form-control" required>
+            <select id="subscriptionCategory" name="subscriptionCategory" class="form-control" required>
+                <option value="GYM">GYM</option>
+                <option value="YOGA">YOGA</option>
+                <option value="PILATES">PILATES</option>
+                <option value="SPA">SPA</option>
+            </select>
         </div>
 
         <div class="mb-3">

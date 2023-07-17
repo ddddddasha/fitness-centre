@@ -28,12 +28,13 @@
                     <li class="nav-item"><a href="/admin/users" class="nav-link px-2 text-white">Users</a></li>
                 </c:if>
             </ul>
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="/search/subscription" method="GET">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-dark text-bg-dark" name="subscriptionType" placeholder="Search..." aria-label="Search">
-                </div>
-            </form>
+            <c:if test="${sessionScope.role eq 'CLIENT' || sessionScope.role eq 'ADMIN'}">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="/search/subscription" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-dark text-bg-dark" name="subscriptionCategory" placeholder="Search..." aria-label="Search">
+                    </div>
+                </form>
+            </c:if>
 
             <c:choose>
                 <c:when test="${not empty sessionScope.role}">

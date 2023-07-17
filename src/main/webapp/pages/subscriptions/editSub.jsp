@@ -23,17 +23,17 @@
 
         <div class="mb-3">
             <label for="subscriptionPeriod" class="form-label">Период:</label>
-            <input type="number" id="subscriptionPeriod" name="subscriptionPeriod" class="form-control" value="${subscription.subscriptionPeriod}">
+            <input type="number" id="subscriptionPeriod" name="subscriptionPeriod" class="form-control" value="${subscription.subscriptionDaysNumber}">
         </div>
 
         <div class="mb-3">
             <label for="numberOfGuestVisits" class="form-label">Количество гостевых посещений:</label>
-            <input type="number" id="numberOfGuestVisits" name="numberOfGuestVisits" class="form-control" value="${subscription.numberOfGuestVisits}">
+            <input type="number" id="numberOfGuestVisits" name="numberOfGuestVisits" class="form-control" value="${subscription.numberGuestVisitDays}">
         </div>
 
         <div class="mb-3">
             <label for="maxSubscriptionStop" class="form-label">Пауза:</label>
-            <input type="number" id="maxSubscriptionStop" name="maxSubscriptionStop" class="form-control" value="${subscription.maxSubscriptionStop}">
+            <input type="number" id="maxSubscriptionStop" name="maxSubscriptionStop" class="form-control" value="${subscription.numberSubscriptionStopDays}">
         </div>
 
         <div class="mb-3">

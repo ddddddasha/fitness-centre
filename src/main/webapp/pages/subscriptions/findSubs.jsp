@@ -16,9 +16,9 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">${subscription.subscriptionPrice} BYN<small class="text-body-secondary fw-light"></small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
-                        <li>${subscription.subscriptionPeriod} days</li>
-                        <li>${subscription.numberOfGuestVisits} guest visits</li>
-                        <li>${subscription.maxSubscriptionStop} days pause</li>
+                        <li>${subscription.subscriptionDaysNumber} days</li>
+                        <li>${subscription.numberGuestVisitDays} guest visits</li>
+                        <li>${subscription.numberSubscriptionStopDays} days pause</li>
                         <li>${subscription.description}</li>
                     </ul>
                     <c:if test="${sessionScope.role eq 'CLIENT'}">

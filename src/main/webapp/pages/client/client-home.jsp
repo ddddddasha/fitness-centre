@@ -36,7 +36,7 @@
             <h4>${user.firstName}, Добро пожаловать!</h4>
             <p>Имя: ${user.firstName}</p>
             <p>Фамилия: ${user.lastName}</p>
-            <p>Возраст: ${user.age}</p>
+            <p>Возраст: ${user.dateBirthday}</p>
             <p>Email: ${user.login}</p>
 
         </div>

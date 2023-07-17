@@ -61,7 +61,7 @@
             <td>${user.id}</td>
             <td>${user.firstName}</td>
             <td>${user.lastName}</td>
-            <td>${user.age}</td>
+            <td>${user.dateBirthday}</td>
             <td>${user.login}</td>
             <td>${user.role}</td>
             <td class="action-buttons">

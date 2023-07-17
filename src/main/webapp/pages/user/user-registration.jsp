@@ -137,8 +137,8 @@
         </div>
 
         <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" class="form-control" required>
+            <label for="age">Date of birth:</label>
+            <input type="text" id="age" name="age" class="form-control" required>
         </div>
 
         <div class="form-group">
