@@ -4,6 +4,7 @@ import app.servlets.fitness.dto.SubscriptionDto;
 import app.servlets.fitness.mappers.SubscriptionDtoMapper;
 import app.servlets.fitness.services.SubscriptionService;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,25 +14,15 @@ import java.io.IOException;
 
 import static app.servlets.fitness.util.Constants.*;
 
-@WebServlet(urlPatterns = "/subscription/create")
+@WebServlet(urlPatterns = "/subscription/create", loadOnStartup = 1)
 public class CreateSubscriptionController extends HttpServlet {
-    private SubscriptionDtoMapper subscriptionDtoMapper;
     private SubscriptionService subscriptionService;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        subscriptionService = (SubscriptionService) getServletContext().getAttribute(SUBSCRIPTION_SERVICE);
-        subscriptionDtoMapper = (SubscriptionDtoMapper) getServletContext().getAttribute(SUBSCRIPTION_DTO_MAPPER);
-        if (subscriptionDtoMapper == null) {
-            subscriptionDtoMapper = new SubscriptionDtoMapper();
-            getServletContext().setAttribute(SUBSCRIPTION_DTO_MAPPER, subscriptionDtoMapper);
-        }
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SubscriptionDto subscriptionDto = subscriptionDtoMapper.buildSubscriptionDto(req.getParameter(SUBSCRIPTION_CATEGORY),
+        SubscriptionDtoMapper subscriptionDtoMapper = new SubscriptionDtoMapper();
+        SubscriptionDto subscriptionDto = subscriptionDtoMapper.buildSubscriptionDto(
+                subscriptionService.determineSubscriptionCategory(req.getParameter(SUBSCRIPTION_CATEGORY)),
                 req.getParameter(SUBSCRIPTION_NAME),
                 Integer.parseInt(req.getParameter(SUBSCRIPTION_PRICE)),
                 Integer.parseInt(req.getParameter(SUBSCRIPTION_PERIOD)),
@@ -41,5 +32,11 @@ public class CreateSubscriptionController extends HttpServlet {
         );
         subscriptionService.createSubscription(subscriptionDtoMapper.toEntity(subscriptionDto));
         req.getRequestDispatcher(INDEX_PAGE).forward(req, resp);
+    }
+
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        subscriptionService = (SubscriptionService) config.getServletContext().getAttribute(SUBSCRIPTION_SERVICE);
     }
 }

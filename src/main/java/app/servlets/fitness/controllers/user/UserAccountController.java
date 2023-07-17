@@ -3,6 +3,7 @@ package app.servlets.fitness.controllers.user;
 import app.servlets.fitness.entities.User;
 import app.servlets.fitness.services.UserService;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +14,9 @@ import java.io.IOException;
 
 import static app.servlets.fitness.util.Constants.*;
 
-@WebServlet(urlPatterns = "/user/account")
+@WebServlet(urlPatterns = "/user/account", loadOnStartup = 1)
 public class UserAccountController extends HttpServlet {
     private UserService userService;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        userService = (UserService) getServletContext().getAttribute(USER_SERVICE);
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,5 +25,10 @@ public class UserAccountController extends HttpServlet {
         User user = userService.getByLogin(login);
         req.setAttribute(USER, user);
         req.getRequestDispatcher(CLIENT_HOME_PAGE).forward(req, resp);
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        userService = (UserService) config.getServletContext().getAttribute(USER_SERVICE);
     }
 }

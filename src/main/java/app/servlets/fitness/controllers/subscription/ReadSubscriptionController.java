@@ -1,9 +1,11 @@
 package app.servlets.fitness.controllers.subscription;
 
+import app.servlets.fitness.creators.ServiceCreator;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.services.SubscriptionService;
 import app.servlets.fitness.services.SubscriptionServiceImpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,19 +16,9 @@ import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
 
-@WebServlet(urlPatterns = "/subscription")
+@WebServlet(urlPatterns = "/subscription", loadOnStartup = 0)
 public class ReadSubscriptionController extends HttpServlet {
     private SubscriptionService subscriptionService;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        subscriptionService = (SubscriptionService) getServletContext().getAttribute(SUBSCRIPTION_SERVICE);
-        if (subscriptionService == null) {
-            subscriptionService = new SubscriptionServiceImpl();
-            getServletContext().setAttribute(SUBSCRIPTION_SERVICE, subscriptionService);
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,5 +30,12 @@ public class ReadSubscriptionController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        ServiceCreator serviceCreator = new ServiceCreator();
+        subscriptionService = serviceCreator.buildSubscriptionService();
+        config.getServletContext().setAttribute(SUBSCRIPTION_SERVICE, subscriptionService);
     }
 }

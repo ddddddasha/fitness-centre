@@ -1,9 +1,10 @@
 package app.servlets.fitness.controllers.subscription;
 
 import app.servlets.fitness.entities.Subscription;
+import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import app.servlets.fitness.services.SubscriptionService;
-import app.servlets.fitness.services.SubscriptionServiceImpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,29 +15,28 @@ import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
 
-@WebServlet(urlPatterns = "/search/subscription")
+@WebServlet(urlPatterns = "/search/subscription", loadOnStartup = 1)
 public class SearchSubscriptionController extends HttpServlet {
     private SubscriptionService subscriptionService;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        subscriptionService = (SubscriptionService) getServletContext().getAttribute(SUBSCRIPTION_SERVICE);
-        if (subscriptionService == null) {
-            subscriptionService = new SubscriptionServiceImpl();
-            getServletContext().setAttribute(SUBSCRIPTION_SERVICE, subscriptionService);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String subscriptionCategoryParam = req.getParameter(SUBSCRIPTION_CATEGORY);
+        List<Subscription> matchingSubscriptions;
+
+        if (subscriptionCategoryParam != null && !subscriptionCategoryParam.isBlank()) {
+            SubscriptionCategory subscriptionCategory = SubscriptionCategory.valueOf(subscriptionCategoryParam);
+            matchingSubscriptions = subscriptionService.findBySubscriptionCategory(subscriptionCategory);
+        } else {
+            matchingSubscriptions = subscriptionService.readSubscriptions();
         }
+
+        req.setAttribute(SUBSCRIPTIONS, matchingSubscriptions);
+        req.getRequestDispatcher(FIND_SUBS_PAGE).forward(req, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String subscriptionTypeParam = req.getParameter(SUBSCRIPTION_TYPE);
-        if (subscriptionTypeParam == null || subscriptionTypeParam.isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + INDEX_PAGE);
-            return;
-        }
-        List<Subscription> matchingSubscriptions = subscriptionService.findBySubscriptionCategory(subscriptionTypeParam);
-        req.setAttribute(SUBSCRIPTIONS, matchingSubscriptions);
-        req.getRequestDispatcher(FIND_SUBS_PAGE).forward(req, resp);
+    public void init(ServletConfig config) throws ServletException {
+        subscriptionService = (SubscriptionService) config.getServletContext().getAttribute(SUBSCRIPTION_SERVICE);
     }
 }
