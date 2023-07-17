@@ -1,38 +1,37 @@
 package app.servlets.fitness.repositories;
 
 import app.servlets.fitness.entities.User;
+import app.servlets.fitness.entities.enums.Role;
 import app.servlets.fitness.mappers.UserMapper;
 import app.servlets.fitness.util.ConnectionManager;
+import lombok.Builder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
 
+@Builder
 public class UserRepositoryImpl implements UserRepository{
-    private final UserMapper mapper = new UserMapper();
+    private final UserMapper userMapper;
     @Override
     public User createUser(User user) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement =
                     connection.prepareStatement(INSERT_INTO_PERSON_TABLE);
-            statement.setString(1, user.getId());
-            statement.setString(2, user.getFirstName());
-            statement.setString(3, user.getLastName());
-            statement.setLong(4, user.getAge());
-            statement.setString(5, user.getLogin());
-            statement.setString(6, user.getPassword());
-            statement.setString(7, "ADMIN");
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setDate(3, Date.valueOf(user.getDateBirthday()));
+            statement.setString(4, user.getLogin());
+            statement.setString(5, user.getPassword());
+            statement.setString(6, Role.CLIENT.name());
             statement.execute();
-            return user;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            System.out.println(e.getMessage());
         }
+        return user;
     }
 
     @Override
@@ -42,20 +41,19 @@ public class UserRepositoryImpl implements UserRepository{
             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_PERSON_TABLE);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String id = resultSet.getString(ID);
+                long id = resultSet.getLong(ID);
                 String firstName = resultSet.getString(FIRST_NAME_DB);
                 String lastName = resultSet.getString(LAST_NAME_DB);
                 String login = resultSet.getString(LOGIN);
-                int age = resultSet.getInt(AGE);
+                LocalDate dateBirthday = resultSet.getDate(AGE).toLocalDate();
                 String role = resultSet.getString(ROLE);
-                User user = mapper.buildUser(id, firstName, lastName, age, login, role);
+                User user = userMapper.buildUser(id, firstName, lastName, dateBirthday, login, Role.valueOf(role));
                 users.add(user);
             }
-            return users;
         } catch (SQLException e) {
-
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return users;
     }
 
     @Override
@@ -67,48 +65,47 @@ public class UserRepositoryImpl implements UserRepository{
             while (resultSet.next()) {
                 String firstName = resultSet.getString(FIRST_NAME_DB);
                 String lastName = resultSet.getString(LAST_NAME_DB);
-                int age = resultSet.getInt(AGE);
+                LocalDate dateBirthday = resultSet.getDate(AGE).toLocalDate();
                 String password = resultSet.getString(PASSWORD);
                 String role = resultSet.getString(ROLE);
-                return mapper.buildUserForSignIn(firstName, lastName, age, login, password, role);
+                return userMapper.buildUserForSignIn(firstName, lastName, dateBirthday, login, password, Role.valueOf(role));
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public boolean deleteById(long id) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_FROM_PERSON_BY_ID);
-            statement.setString(1, id);
+            statement.setLong(1, id);
             return statement.execute();
         } catch (SQLException e) {
-
-            throw new RuntimeException(e.getMessage());
-
+            e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public User getById(String id) {
+    public User getById(long id) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_DATA_FROM_PERSON_BY_ID);
-            statement.setString(1, id);
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String firstName = resultSet.getString(FIRST_NAME_DB);
                 String lastName = resultSet.getString(LAST_NAME_DB);
-                int age = resultSet.getInt(AGE);
+                LocalDate dateBirthday = resultSet.getDate(AGE).toLocalDate();
                 String login = resultSet.getString(LOGIN);
                 String password = resultSet.getString(PASSWORD);
-                return mapper.buildUserForUserPage(id, firstName, lastName, age, login, password);
+                return userMapper.buildUserForUserPage(id, firstName, lastName, dateBirthday, login, password);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return null;
     }
@@ -119,28 +116,13 @@ public class UserRepositoryImpl implements UserRepository{
             PreparedStatement statement = connection.prepareStatement(UPDATE_PERSON_BY_ID);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
-            statement.setInt(3, user.getAge());
+            statement.setDate(3, Date.valueOf(user.getDateBirthday()));
             statement.setString(4, user.getLogin());
-            statement.setString(5, user.getId());
+            statement.setLong(5, user.getId());
             statement.executeUpdate();
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    public boolean isIdExistsInDatabase(String id) {
-        try (Connection connection = ConnectionManager.open()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_COUNT_FROM_PERSON_BY_ID);
-            statement.setString(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            int count = resultSet.getInt(1);
-            return count > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return user;
     }
 }

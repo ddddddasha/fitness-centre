@@ -11,12 +11,10 @@ public interface UserRepository {
 
     User getByLogin(String login);
 
-    boolean deleteById(String id);
+    boolean deleteById(long id);
 
-    User getById(String id);
+    User getById(long id);
 
     User updateUser(User user);
-
-    boolean isIdExistsInDatabase(String id);
 
 }

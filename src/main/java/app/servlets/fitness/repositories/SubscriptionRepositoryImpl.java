@@ -1,8 +1,10 @@
 package app.servlets.fitness.repositories;
 
 import app.servlets.fitness.entities.Subscription;
+import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import app.servlets.fitness.mappers.SubscriptionMapper;
 import app.servlets.fitness.util.ConnectionManager;
+import lombok.Builder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,29 +15,28 @@ import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
 
+@Builder
 public class SubscriptionRepositoryImpl implements SubscriptionRepository{
 
-    private final SubscriptionMapper mapper = new SubscriptionMapper();
+    private final SubscriptionMapper subscriptionMapper;
 
     @Override
     public Subscription createSubscription(Subscription subscription) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement =
                     connection.prepareStatement(INSERT_INTO_SUBSCRIPTION_TABLE);
-            statement.setString(1, subscription.getId());
-            statement.setString(2, subscription.getSubscriptionCategory());
-            statement.setString(3, subscription.getSubscriptionName());
-            statement.setLong(4, subscription.getSubscriptionPrice());
-            statement.setLong(5, subscription.getSubscriptionPeriod());
-            statement.setLong(6, subscription.getMaxSubscriptionStop());
-            statement.setInt(7, subscription.getNumberOfGuestVisits());
-            statement.setString(8, subscription.getDescription());
+            statement.setString(1, subscription.getSubscriptionCategory().getName());
+            statement.setString(2, subscription.getSubscriptionName());
+            statement.setLong(3, subscription.getSubscriptionPrice());
+            statement.setLong(4, subscription.getSubscriptionDaysNumber());
+            statement.setLong(5, subscription.getNumberSubscriptionStopDays());
+            statement.setInt(6, subscription.getNumberGuestVisitDays());
+            statement.setString(7, subscription.getDescription());
             statement.execute();
-            return subscription;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return subscription;
     }
 
     @Override
@@ -45,63 +46,62 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository{
             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_SUBSCRIPTION);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String id = resultSet.getString(ID);
+                long id = resultSet.getLong(ID);
                 String subscriptionName = resultSet.getString(SUBSCRIPTION_NAME_DB);
                 int subscriptionPrice = Integer.parseInt(resultSet.getString(SUBSCRIPTION_PRICE_DB));
                 int subscriptionPeriod = resultSet.getInt(SUBSCRIPTION_PERIOD_DB);
-                int numberOfGuestVisits = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
-                int maxSubscriptionStop = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
+                int numberGuestVisitDays = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
+                int numberSubscriptionStopDays = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
                 String description = resultSet.getString(DESCRIPTION);
-                Subscription subscription = mapper.buildSubscription(id, subscriptionName, subscriptionPrice, subscriptionPeriod,
-                        numberOfGuestVisits, maxSubscriptionStop, description);
+                Subscription subscription = subscriptionMapper.buildSubscription(id, subscriptionName, subscriptionPrice, subscriptionPeriod,
+                        numberGuestVisitDays, numberSubscriptionStopDays, description);
                 subscriptions.add(subscription);
             }
-            return subscriptions;
         } catch (SQLException e) {
-
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return subscriptions;
     }
 
     @Override
-    public List<Subscription> findBySubscriptionCategory(String subscriptionCategory) {
+    public List<Subscription> findBySubscriptionCategory(SubscriptionCategory subscriptionCategory) {
         List<Subscription> subscriptions = new ArrayList<>();
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_SUBSCRIPTION_BY_SUBSCRIPTION_CATEGORY);
-            statement.setString(1, subscriptionCategory);
+            statement.setString(1, String.valueOf(subscriptionCategory));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String subscriptionName = resultSet.getString(SUBSCRIPTION_NAME_DB);
                 int subscriptionPrice = Integer.parseInt(resultSet.getString(SUBSCRIPTION_PRICE_DB));
                 int subscriptionPeriod = resultSet.getInt(SUBSCRIPTION_PERIOD_DB);
-                int numberOfGuestVisits = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
-                int maxSubscriptionStop = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
+                int numberGuestVisitDays = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
+                int numberSubscriptionStopDays = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
                 String description = resultSet.getString(DESCRIPTION);
-                Subscription subscription = mapper.buildSubscriptionForSearch(subscriptionCategory, subscriptionName, subscriptionPrice, subscriptionPeriod,
-                        numberOfGuestVisits, maxSubscriptionStop, description);
+                Subscription subscription = subscriptionMapper.buildSubscriptionForSearch(subscriptionCategory, subscriptionName, subscriptionPrice, subscriptionPeriod,
+                        numberGuestVisitDays, numberSubscriptionStopDays, description);
                 subscriptions.add(subscription);
             }
-            return subscriptions;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return subscriptions;
     }
 
     @Override
-    public Subscription getById(String id) {
+    public Subscription getById(long id) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_DATA_FROM_SUBSCRIPTION_BY_ID);
-            statement.setString(1, id);
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String subscriptionName = resultSet.getString(SUBSCRIPTION_NAME_DB);
                 int subscriptionPrice = resultSet.getInt(SUBSCRIPTION_PRICE_DB);
                 int subscriptionPeriod = resultSet.getInt(SUBSCRIPTION_PERIOD_DB);
-                int numberOfGuestVisits = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
-                int maxSubscriptionStop = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
+                int numberGuestVisitDays = resultSet.getInt(NUMBER_OF_GUEST_VISITS_DB);
+                int numberSubscriptionStopDays = resultSet.getInt(MAX_SUBSCRIPTION_STOP_DB);
                 String description = resultSet.getString(DESCRIPTION);
-                return mapper.buildSubscription(id, subscriptionName, subscriptionPrice, subscriptionPeriod,
-                        numberOfGuestVisits, maxSubscriptionStop, description);
+                return subscriptionMapper.buildSubscription(id, subscriptionName, subscriptionPrice, subscriptionPeriod,
+                        numberGuestVisitDays, numberSubscriptionStopDays, description);
 
             }
         } catch (SQLException e) {
@@ -112,16 +112,15 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository{
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public boolean deleteById(long id) {
         try (Connection connection = ConnectionManager.open()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_FROM_SUBSCRIPTION_BY_ID);
-            statement.setString(1, id);
+            statement.setLong(1, id);
             return statement.execute();
         } catch (SQLException e) {
-
-            throw new RuntimeException(e.getMessage());
-
+            e.printStackTrace();
         }
+        return false;
     }
 
     public Subscription updateSubscription(Subscription subscription) {
@@ -129,30 +128,25 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository{
             PreparedStatement statement = connection.prepareStatement(UPDATE_SUBSCRIPTION_BY_ID);
             statement.setString(1, subscription.getSubscriptionName());
             statement.setInt(2, subscription.getSubscriptionPrice());
-            statement.setInt(3, subscription.getSubscriptionPeriod());
-            statement.setInt(4, subscription.getNumberOfGuestVisits());
-            statement.setInt(5, subscription.getMaxSubscriptionStop());
+            statement.setInt(3, subscription.getSubscriptionDaysNumber());
+            statement.setInt(4, subscription.getNumberGuestVisitDays());
+            statement.setInt(5, subscription.getNumberSubscriptionStopDays());
             statement.setString(6, subscription.getDescription());
-            statement.setString(7, subscription.getId());
+            statement.setLong(7, subscription.getId());
             statement.executeUpdate();
             return subscription;
         } catch (SQLException e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
+        return subscription;
     }
 
-    @Override
-    public boolean isIdExistsInDatabase(String id) {
-        try (Connection connection = ConnectionManager.open()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_COUNT_FROM_SUBSCRIPTION_BY_ID);
-            statement.setString(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            int count = resultSet.getInt(1);
-            return count > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public SubscriptionCategory determineSubscriptionCategory(String category) {
+        for (SubscriptionCategory subscriptionCategory : SubscriptionCategory.values()) {
+            if (subscriptionCategory.getName().equals(category)) {
+                return subscriptionCategory;
+            }
         }
+        return null;
     }
 }
