@@ -65,8 +65,14 @@
             <td>${user.login}</td>
             <td>${user.role}</td>
             <td class="action-buttons">
-                <a href="/user/edit?id=${user.id}" class="btn btn-primary">Редактировать</a>
-                <a href="/deleteUser?id=${user.id}" class="btn btn-danger">Удалить</a>
+                <form action="/user/edit" method="GET">
+                    <input type="hidden" name="id" value="${user.id}">
+                    <button type="submit" class="btn btn-primary">Редактировать</button>
+                </form>
+                <form action="/deleteUser" method="POST">
+                    <input type="hidden" name="id" value="${user.id}">
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
             </td>
         </tr>
     </c:forEach>

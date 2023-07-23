@@ -23,7 +23,7 @@
 
     <div class="mb-3">
       <label for="age" class="form-label">Age:</label>
-      <input type="number" id="age" name="age" class="form-control" value="${user.age}">
+      <input type="text" id="age" name="age" class="form-control" value="${user.dateBirthday}">
     </div>
 
     <div class="mb-3">

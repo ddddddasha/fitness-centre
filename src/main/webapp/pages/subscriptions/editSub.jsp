@@ -18,7 +18,7 @@
 
         <div class="mb-3">
             <label for="subscriptionPrice" class="form-label">Цена:</label>
-            <input type="number" id="subscriptionPrice" name="subscriptionPrice" class="form-control" value="${subscription.subscriptionPrice}">
+            <input type="text" id="subscriptionPrice" name="subscriptionPrice" class="form-control" value="${subscription.subscriptionPrice}">
         </div>
 
         <div class="mb-3">
