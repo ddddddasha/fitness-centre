@@ -2,10 +2,14 @@ package app.servlets.fitness.services;
 
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.entities.enums.SubscriptionCategory;
+import app.servlets.fitness.exseptions.SubscriptionSearchException;
 import app.servlets.fitness.repositories.SubscriptionRepository;
 import lombok.Builder;
 
 import java.util.List;
+
+import static app.servlets.fitness.util.Constants.*;
+import static app.servlets.fitness.util.Constants.SUBSCRIPTION_EDIT_EXCEPTION;
 
 @Builder
 public class SubscriptionServiceImpl implements SubscriptionService{
@@ -13,17 +17,13 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public Subscription createSubscription(Subscription subscription) {
-        return subscriptionRepository.createSubscription(
-                new Subscription(subscription.getId(), subscription.getSubscriptionCategory(), subscription.getSubscriptionName(),
-                        subscription.getSubscriptionPrice(), subscription.getSubscriptionDaysNumber(),
-                        subscription.getNumberGuestVisitDays(), subscription.getNumberSubscriptionStopDays(),
-                        subscription.getDescription())
-        );
+        return subscriptionRepository.createSubscription(subscription);
     }
 
     @Override
-    public Subscription getById(long id) {
-        return subscriptionRepository.getById(id);
+    public Subscription getById(long id) throws SubscriptionSearchException {
+        return subscriptionRepository.getById(id)
+                .orElseThrow(() -> new SubscriptionSearchException(SUBSCRIPTION_SEARCH_EXCEPTION));
     }
 
     @Override
@@ -32,13 +32,15 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     }
 
     @Override
-    public boolean deleteById(long id) {
-        return subscriptionRepository.deleteById(id);
+    public Subscription deleteById(long id) throws SubscriptionSearchException {
+        return subscriptionRepository.deleteById(id)
+                .orElseThrow(()-> new SubscriptionSearchException(SUBSCRIPTION_DELETE_EXCEPTION));
     }
 
     @Override
-    public Subscription updateSubscription(Subscription subscription) {
-        return subscriptionRepository.updateSubscription(subscription);
+    public Subscription updateSubscription(Subscription subscription) throws SubscriptionSearchException {
+        return subscriptionRepository.updateSubscription(subscription)
+                .orElseThrow(() -> new SubscriptionSearchException(SUBSCRIPTION_EDIT_EXCEPTION));
     }
 
     @Override
