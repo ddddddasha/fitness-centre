@@ -22,7 +22,7 @@ public class UserAccountController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
-        User user = userService.getByLogin(login);
+        User user = userService.getByLogin(login).get();
         req.setAttribute(USER, user);
         req.getRequestDispatcher(CLIENT_HOME_PAGE).forward(req, resp);
     }

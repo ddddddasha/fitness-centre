@@ -2,7 +2,7 @@ package app.servlets.fitness.controllers.user;
 
 import app.servlets.fitness.creators.ServiceCreator;
 import app.servlets.fitness.dto.UserDto;
-import app.servlets.fitness.mappers.UserDtoMapper;
+import app.servlets.fitness.mappers.UserMapper;
 import app.servlets.fitness.services.UserService;
 
 import javax.servlet.ServletConfig;
@@ -22,14 +22,14 @@ public class CreateUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDtoMapper userDtoMapper = new UserDtoMapper();
-        UserDto userDto = userDtoMapper.buildUserDto(req.getParameter(FIRST_NAME),
+        UserMapper userMapper = new UserMapper();
+        UserDto userDto = userMapper.buildUserDto(req.getParameter(FIRST_NAME),
                 req.getParameter(LAST_NAME),
                 LocalDate.parse(req.getParameter(AGE)),
                 req.getParameter(LOGIN),
                 req.getParameter(PASSWORD)
         );
-        userService.createUser(userDtoMapper.toEntity(userDto));
+        userService.createUser(userMapper.toEntity(userDto));
         req.getRequestDispatcher(SIGN_IN_PAGE).forward(req, resp);
     }
 

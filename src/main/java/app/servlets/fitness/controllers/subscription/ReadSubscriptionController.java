@@ -3,7 +3,6 @@ package app.servlets.fitness.controllers.subscription;
 import app.servlets.fitness.creators.ServiceCreator;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.services.SubscriptionService;
-import app.servlets.fitness.services.SubscriptionServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
