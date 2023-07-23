@@ -2,13 +2,23 @@ package app.servlets.fitness.util;
 
 public class Constants {
 
+    /**
+     * email filter
+     */
     public static final String EMAIL_REGEX = "[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,4}";
 
+
+    /**
+     * url
+     */
     public static final String LOGIN_URL = "/login";
     public static final String ADMIN_READ_USERS_URL = "/admin/users";
     public static final String SUBSCRIPTIONS_URL = "/subscription";
 
 
+    /**
+     * pages
+     */
     public static final String USER_REGISTRATION_PAGE = "/pages/user/user-registration.jsp";
     public static final String INDEX_PAGE = "/index.jsp";
     public static final String EDIT_SUBSCRIPTION_PAGE = "/pages/subscriptions/editSub.jsp";
@@ -18,8 +28,14 @@ public class Constants {
     public static final String SIGN_IN_PAGE = "/pages/user/user-sign-in.jsp";
     public static final String CLIENT_HOME_PAGE = "/pages/client/client-home.jsp";
     public static final String FIND_SUBS_PAGE = "/pages/subscriptions/findSubs.jsp";
+    public static final String EDIT_SUBSCRIPTION_EXCEPTION_PAGE = "/pages/exceptions/edit-subscription-exception.jsp";
+    public static final String DELETE_SUBSCRIPTION_EXCEPTION_PAGE ="/pages/exceptions/delete-subscription-exception.jsp";
+    public static final String EDIT_USER_EXCEPTION_PAGE = "/pages/exceptions/edit-user-exception.jsp";
 
 
+    /**
+     * subscription fields
+     */
     public static final String SUBSCRIPTION = "subscription";
     public static final String SUBSCRIPTION_SERVICE = "subscriptionService";
     public static final String SUBSCRIPTION_CATEGORY = "subscriptionCategory";
@@ -31,18 +47,68 @@ public class Constants {
     public static final String DESCRIPTION = "description";
     public static final String ID = "id";
     public static final String SUBSCRIPTIONS = "subscriptions";
-    public static final String SUBSCRIPTION_DTO_MAPPER = "subscriptionDtoMapper";
-    public static final String SUBSCRIPTION_TYPE = "subscriptionType";
-    public static final String SUBSCRIPTION_NAME_DB = "subscription_name";
-    public static final String SUBSCRIPTION_PRICE_DB = "subscription_price";
-    public static final String SUBSCRIPTION_PERIOD_DB = "subscription_period";
-    public static final String NUMBER_OF_GUEST_VISITS_DB = "number_of_guest_visits";
-    public static final String MAX_SUBSCRIPTION_STOP_DB = "max_subscription_stop";
-
-    public static final String SUBSCRIPTION_MAPPER = "subscriptionMapper";
-
-    public static final String USER_DTO_MAPPER = "userDtoMapper";
     public static final String USER_SERVICE = "userService";
+
+
+    /**
+     * errors
+     */
+    public static final String ERROR_MESSAGE_EMAIL_ALREADY_EXISTS = "errorMessageEmailAlreadyExists";
+    public static final String EMAIL_ALREADY_EXISTS = "Пользователь с таким логином уже существует";
+    public static final String ERROR_MESSAGE_EMAIL = "errorMessageEmail";
+    public static final String INCORRECT_EMAIL = "Неверный формат логина (email)";
+
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String ERROR_LOGIN_MESSAGE = "Неверное имя пользователя или пароль";
+    public static final String USER_DELETE_EXCEPTION = "The user has not been deleted";
+    public static final String USER_SEARCH_EXCEPTION = "The user not found";
+    public static final String USER_EDIT_EXCEPTION = "User editing failed";
+    public static final String SUBSCRIPTION_DELETE_EXCEPTION = "Subscription not deleted";
+    public static final String SUBSCRIPTION_SEARCH_EXCEPTION = "The subscription not found";
+    public static final String SUBSCRIPTION_EDIT_EXCEPTION = "Subscription editing failed";
+
+    /**
+     * Password hashing
+     */
+    public static final String ALGORITHM_PBKDF2 = "PBKDF2WithHmacSHA256";
+    public static final String SPLIT_FOR_PBKDF2 = ":";
+    public static final int ZERO = 0;
+    public static final int ONE = 1;
+    public static final int SALT_LENGTH = 16;
+    public static final int ITERATIONS = 100000;
+    public static final int KEY_LENGTH = 256;
+
+    /**
+     *
+     */
+    public static final String ERROR_LOADING_THE_JDBC_DRIVER = "Ошибка при загрузке драйвера JDBC";
+    public static final String CLASS_NAME_MYSQL = "com.mysql.cj.jdbc.Driver";
+    public static final String URL_KEY = "db.url";
+    public static final String USERNAME_KEY = "db.username";
+    public static final String PASSWORD_KEY = "db.password";
+
+    /**
+     * Typed query
+     */
+
+    public static final String READ_USERS_QUERY = "SELECT u FROM User u";
+    public static final String GET_USER_BY_LOGIN_QUERY = "SELECT u FROM User u WHERE u.login = :login";
+    public static final String READ_SUBSCRIPTIONS_QUERY = "SELECT s FROM Subscription s";
+    public static final String GET_SUBSCRIPTIONS_BY_CATEGORY_QUERY = "SELECT s FROM Subscription s WHERE s.subscriptionCategory = :category";
+
+
+    /**
+     * fields for db
+     */
+    public final static String USER_TABLE = "person";
+    public final static String DATE_BIRTHDAY_DB = "date_birthday";
+    public final static String SUBSCRIPTION_CATEGORY_DB = "subscription_category";
+    public final static String SUBSCRIPTION_NAME_DB = "subscription_name";
+    public final static String SUBSCRIPTION_PRICE_DB = "subscription_price";
+    public final static String SUBSCRIPTION_DAYS_NUMBER_DB = "subscription_days_number";
+    public final static String NUMBER_GUEST_VISIT_DAYS_DB = "number_guest_visit_days";
+    public final static String NUMBER_SUBSCRIPTION_STOP_DAYS_DB = "number_subscription_stop_days";
+    public static final String CATEGORY_COLUMN = "category";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String AGE = "age";
@@ -54,46 +120,5 @@ public class Constants {
     public static final String FIRST_NAME_DB = "first_name";
     public static final String LAST_NAME_DB = "last_name";
 
-
-    public static final String ERROR_MESSAGE_EMAIL_ALREADY_EXISTS = "errorMessageEmailAlreadyExists";
-    public static final String EMAIL_ALREADY_EXISTS = "Пользователь с таким логином уже существует";
-    public static final String ERROR_MESSAGE_EMAIL = "errorMessageEmail";
-    public static final String INCORRECT_EMAIL = "Неверный формат логина (email)";
-    public static final String ERROR_MESSAGE = "errorMessage";
-    public static final String ERROR_LOGIN_MESSAGE = "Неверное имя пользователя или пароль";
-    public static final String ERROR_USER_DELETE = "Ошибка при удалении пользователя";
-
-
-    public static final String ALGORITHM_PBKDF2 = "PBKDF2WithHmacSHA256";
-    public static final String SPLIT_FOR_PBKDF2 = ":";
-    public static final int ZERO = 0;
-    public static final int ONE = 1;
-    public static final int SALT_LENGTH = 16;
-    public static final int ITERATIONS = 100000;
-    public static final int KEY_LENGTH = 256;
-
-
-    public static final String ERROR_LOADING_THE_JDBC_DRIVER = "Ошибка при загрузке драйвера JDBC";
-    public static final String CLASS_NAME_MYSQL = "com.mysql.cj.jdbc.Driver";
-    public static final String URL_KEY = "db.url";
-    public static final String USERNAME_KEY = "db.username";
-    public static final String PASSWORD_KEY = "db.password";
-
-
-    public static final String INSERT_INTO_PERSON_TABLE = "INSERT INTO person (first_name, last_name, age, login, password, role) VALUES (?,?,?,?,?,?)";
-    public static final String SELECT_FROM_PERSON_TABLE = "SELECT * FROM person";
-    public static final String SELECT_DATA_FROM_PERSON_BY_LOGIN = "SELECT first_name, last_name, age, password, role FROM person WHERE login=?";
-    public static final String DELETE_FROM_PERSON_BY_ID = "DELETE FROM person WHERE id=?";
-    public static final String SELECT_DATA_FROM_PERSON_BY_ID = "SELECT first_name, last_name, age, login, password FROM person WHERE id=?";
-    public static final String UPDATE_PERSON_BY_ID = "UPDATE person SET first_name=?, last_name=?, age=?, login=? WHERE id=?";
-    public static final String SELECT_COUNT_FROM_PERSON_BY_ID = "SELECT COUNT(*) FROM person WHERE id = ?";
-    public static final String INSERT_INTO_SUBSCRIPTION_TABLE = "INSERT INTO subscription (subscription_category, subscription_name, subscription_price, subscription_period,\n" +
-            "                                             number_of_guest_visits, max_subscription_stop, description) VALUES (?,?,?,?,?,?,?)";
-    public static final String SELECT_FROM_SUBSCRIPTION = "SELECT * FROM subscription";
-    public static final String SELECT_FROM_SUBSCRIPTION_BY_SUBSCRIPTION_CATEGORY = "SELECT * FROM subscription WHERE subscription_category=?";
-    public static final String SELECT_DATA_FROM_SUBSCRIPTION_BY_ID = "SELECT subscription_name, subscription_price, subscription_period,\n" +
-            "number_of_guest_visits, max_subscription_stop, description FROM subscription WHERE id=?";
-    public static final String DELETE_FROM_SUBSCRIPTION_BY_ID = "DELETE FROM subscription WHERE id=?";
-    public static final String UPDATE_SUBSCRIPTION_BY_ID = "UPDATE subscription SET subscription_name=?, subscription_price=?, subscription_period=?, number_of_guest_visits=?, max_subscription_stop=?, description=? WHERE id=?";
-    public static final String SELECT_COUNT_FROM_SUBSCRIPTION_BY_ID = "SELECT COUNT(*) FROM subscription WHERE id = ?";
+    public static final String PERSISTENCE_UNIT_NAME = "Fitness-centre-Persistence";
 }
