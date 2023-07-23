@@ -10,6 +10,7 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 import static app.servlets.fitness.util.Constants.*;
 
@@ -21,8 +22,8 @@ public class UniqueLoginFilter extends HttpFilter {
         UserService userService = (UserService) getServletContext().getAttribute(USER_SERVICE);
         String login = request.getParameter(LOGIN);
 
-        User user = userService.getByLogin(login);
-        if (user != null) {
+        Optional<User> userOptional = userService.getByLogin(login);
+        if (userOptional.isPresent()) {
             request.setAttribute(ERROR_MESSAGE_EMAIL_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS);
             request.getRequestDispatcher(USER_REGISTRATION_PAGE).forward(request, response);
         } else {
