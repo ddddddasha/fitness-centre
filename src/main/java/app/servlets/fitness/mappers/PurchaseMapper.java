@@ -50,7 +50,7 @@ public class PurchaseMapper {
                 .build();
     }
 
-    public List<PurchaseDto> mapToDtoList(List<Purchase> purchases) { //переделать статику
+    public List<PurchaseDto> mapToDtoList(List<Purchase> purchases) {
         return purchases.stream()
                 .map(PurchaseMapper.getInstance()::mapToDto)
                 .collect(Collectors.toList());

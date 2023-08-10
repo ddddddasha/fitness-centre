@@ -1,5 +1,6 @@
 package app.servlets.fitness.controllers.subscription;
 
+import app.servlets.fitness.dto.SubscriptionDto;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.exseptions.SubscriptionSearchException;
 import app.servlets.fitness.exseptions.UserSearchException;
@@ -16,17 +17,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import static app.servlets.fitness.util.Constants.*;
-import static app.servlets.fitness.util.Constants.EDIT_SUBSCRIPTION_EXCEPTION_PAGE;
 
 @WebServlet(urlPatterns = "/subscription/edit", loadOnStartup = 1)
 public class EditSubscriptionController extends HttpServlet {
     private SubscriptionService subscriptionService;
+    private final SubscriptionMapper subscriptionMapper = SubscriptionMapper.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String subscriptionId = req.getParameter(ID);
         try {
-            Subscription subscription = subscriptionService.getById(Long.parseLong(subscriptionId));
+            SubscriptionDto subscription = subscriptionService.getById(Long.parseLong(subscriptionId));
             req.setAttribute(SUBSCRIPTION, subscription);
             req.getRequestDispatcher(EDIT_SUBSCRIPTION_PAGE).forward(req, resp);
         }
@@ -40,7 +41,6 @@ public class EditSubscriptionController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SubscriptionMapper subscriptionMapper = new SubscriptionMapper();
         String id = req.getParameter(ID);
         String subscriptionName = req.getParameter(SUBSCRIPTION_NAME);
         BigDecimal subscriptionPrice = new BigDecimal(req.getParameter(SUBSCRIPTION_PRICE));

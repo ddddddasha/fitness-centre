@@ -1,12 +1,27 @@
 package app.servlets.fitness.mappers;
 
 import app.servlets.fitness.dto.SubscriptionDto;
+import app.servlets.fitness.dto.UserDto;
 import app.servlets.fitness.entities.Subscription;
+import app.servlets.fitness.entities.User;
 import app.servlets.fitness.entities.enums.SubscriptionCategory;
 
 import java.math.BigDecimal;
 
 public class SubscriptionMapper {
+
+    private static SubscriptionMapper instance;
+    private final PurchaseMapper purchaseMapper = PurchaseMapper.getInstance();
+
+    private SubscriptionMapper() {
+    }
+
+    public static SubscriptionMapper getInstance() {
+        if (instance == null) {
+            instance = new SubscriptionMapper();
+        }
+        return instance;
+    }
     public Subscription buildSubscription(long id, String subscriptionName, BigDecimal subscriptionPrice, int subscriptionDaysNumber,
                                           Integer numberGuestVisitDays, int numberSubscriptionStopDays, String description){
         return Subscription.builder()
@@ -58,5 +73,19 @@ public class SubscriptionMapper {
                 .description(dto.getDescription())
                 .build();
 
+    }
+
+    public SubscriptionDto mapToDto(Subscription subscription) {
+        return SubscriptionDto.builder()
+                .id(subscription.getId())
+                .subscriptionCategory(subscription.getSubscriptionCategory())
+                .subscriptionName(subscription.getSubscriptionName())
+                .subscriptionPrice(subscription.getSubscriptionPrice())
+                .subscriptionDaysNumber(subscription.getSubscriptionDaysNumber())
+                .numberGuestVisitDays(subscription.getNumberGuestVisitDays())
+                .numberSubscriptionStopDays(subscription.getNumberSubscriptionStopDays())
+                .description(subscription.getDescription())
+                .purchases(purchaseMapper.mapToDtoList(subscription.getPurchases()))
+                .build();
     }
 }

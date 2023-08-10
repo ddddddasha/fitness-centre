@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
 public class SubscriptionDto {
+    private long id;
     private SubscriptionCategory subscriptionCategory;
     private String subscriptionName;
     private BigDecimal subscriptionPrice;
@@ -16,4 +18,5 @@ public class SubscriptionDto {
     private int numberGuestVisitDays;
     private int numberSubscriptionStopDays;
     private String description;
+    private List<PurchaseDto> purchases;
 }

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static app.servlets.fitness.util.Constants.*;
-import static app.servlets.fitness.util.Constants.DELETE_SUBSCRIPTION_EXCEPTION_PAGE;
 
 @WebServlet(urlPatterns = "/subscription/delete", loadOnStartup = 1)
 public class DeleteSubscriptionController extends HttpServlet {

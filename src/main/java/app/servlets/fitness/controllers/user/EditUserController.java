@@ -17,11 +17,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static app.servlets.fitness.util.Constants.*;
-import static app.servlets.fitness.util.Constants.EDIT_USER_EXCEPTION_PAGE;
 
 @WebServlet(urlPatterns = "/user/edit", loadOnStartup = 1)
 public class EditUserController extends HttpServlet {
     private UserService userService;
+    private final UserMapper userMapper = UserMapper.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,7 +38,6 @@ public class EditUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        UserMapper userMapper = new UserMapper();
         String id = req.getParameter(ID);
         String firstName = req.getParameter(FIRST_NAME);
         String lastName = req.getParameter(LAST_NAME);

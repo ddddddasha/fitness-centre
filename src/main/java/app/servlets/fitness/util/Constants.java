@@ -48,6 +48,17 @@ public class Constants {
     public static final String ID = "id";
     public static final String SUBSCRIPTIONS = "subscriptions";
     public static final String USER_SERVICE = "userService";
+    public static final String PURCHASE_SERVICE = "purchaseService";
+
+    /**
+     * purchase fields
+     */
+    public static final String PURCHASE_TABLE = "PURCHASE";
+    public static final String USER_ID = "USER_ID";
+    public static final String SUBSCRIPTION_ID = "SUBSCRIPTION_ID";
+    public static final String AMOUNT_BYN = "AMOUNT_BYN";
+    public static final String PAYMENT_DATE = "PAYMENT_DATE";
+    public static final String PAYMENT_STATUS = "PAYMENT_STATUS";
 
 
     /**
@@ -101,13 +112,13 @@ public class Constants {
      * fields for db
      */
     public final static String USER_TABLE = "person";
-    public final static String DATE_BIRTHDAY_DB = "date_birthday";
-    public final static String SUBSCRIPTION_CATEGORY_DB = "subscription_category";
-    public final static String SUBSCRIPTION_NAME_DB = "subscription_name";
-    public final static String SUBSCRIPTION_PRICE_DB = "subscription_price";
-    public final static String SUBSCRIPTION_DAYS_NUMBER_DB = "subscription_days_number";
-    public final static String NUMBER_GUEST_VISIT_DAYS_DB = "number_guest_visit_days";
-    public final static String NUMBER_SUBSCRIPTION_STOP_DAYS_DB = "number_subscription_stop_days";
+    public final static String DATE_BIRTHDAY_COLUMN = "date_birthday";
+    public final static String SUBSCRIPTION_CATEGORY_COLUMN = "subscription_category";
+    public final static String SUBSCRIPTION_NAME_COLUMN = "subscription_name";
+    public final static String SUBSCRIPTION_PRICE_COLUMN = "subscription_price";
+    public final static String SUBSCRIPTION_DAYS_NUMBER_COLUMN = "subscription_days_number";
+    public final static String NUMBER_GUEST_VISIT_DAYS_COLUMN = "number_guest_visit_days";
+    public final static String NUMBER_SUBSCRIPTION_STOP_DAYS_COLUMN = "number_subscription_stop_days";
     public static final String CATEGORY_COLUMN = "category";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
@@ -117,8 +128,7 @@ public class Constants {
     public static final String USER = "user";
     public static final String ROLE = "role";
     public static final String USERS = "users";
-    public static final String FIRST_NAME_DB = "first_name";
-    public static final String LAST_NAME_DB = "last_name";
-
+    public static final String FIRST_NAME_COLUMN = "first_name";
+    public static final String LAST_NAME_COLUMN = "last_name";
     public static final String PERSISTENCE_UNIT_NAME = "Fitness-centre-Persistence";
 }

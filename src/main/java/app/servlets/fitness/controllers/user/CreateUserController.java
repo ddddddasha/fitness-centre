@@ -19,10 +19,10 @@ import static app.servlets.fitness.util.Constants.*;
 @WebServlet(urlPatterns = "/user/create", loadOnStartup = 0)
 public class CreateUserController extends HttpServlet {
     private UserService userService;
+    private final UserMapper userMapper = UserMapper.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserMapper userMapper = new UserMapper();
         UserDto userDto = userMapper.buildUserDto(req.getParameter(FIRST_NAME),
                 req.getParameter(LAST_NAME),
                 LocalDate.parse(req.getParameter(AGE)),

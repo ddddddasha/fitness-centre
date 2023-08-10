@@ -18,10 +18,10 @@ import static app.servlets.fitness.util.Constants.*;
 @WebServlet(urlPatterns = "/subscription/create", loadOnStartup = 1)
 public class CreateSubscriptionController extends HttpServlet {
     private SubscriptionService subscriptionService;
+    private final SubscriptionMapper subscriptionMapper = SubscriptionMapper.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SubscriptionMapper subscriptionMapper = new SubscriptionMapper();
         SubscriptionDto subscriptionDto = subscriptionMapper.buildSubscriptionDto(
                 subscriptionService.determineSubscriptionCategory(req.getParameter(SUBSCRIPTION_CATEGORY)),
                 req.getParameter(SUBSCRIPTION_NAME),

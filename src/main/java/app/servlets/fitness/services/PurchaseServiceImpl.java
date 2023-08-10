@@ -2,7 +2,6 @@ package app.servlets.fitness.services;
 
 import app.servlets.fitness.dto.PurchaseDto;
 import app.servlets.fitness.entities.Purchase;
-import app.servlets.fitness.mappers.PurchaseMapper;
 import app.servlets.fitness.repositories.PurchaseRepository;
 import lombok.Builder;
 

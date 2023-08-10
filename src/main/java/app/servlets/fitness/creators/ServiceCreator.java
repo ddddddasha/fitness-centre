@@ -1,12 +1,8 @@
 package app.servlets.fitness.creators;
 
-import app.servlets.fitness.services.SubscriptionService;
-import app.servlets.fitness.services.SubscriptionServiceImpl;
-import app.servlets.fitness.services.UserService;
-import app.servlets.fitness.services.UserServiceImpl;
+import app.servlets.fitness.services.*;
 
 public class ServiceCreator {
-    
     public UserService buildUserService() {
         RepositoryCreator creator = new RepositoryCreator();
         return UserServiceImpl.builder()
@@ -18,6 +14,13 @@ public class ServiceCreator {
         RepositoryCreator creator = new RepositoryCreator();
         return SubscriptionServiceImpl.builder()
                 .subscriptionRepository(creator.buildSubscriptionRepository())
+                .build();
+    }
+
+    public PurchaseService buildPurchaseService() {
+        RepositoryCreator creator = new RepositoryCreator();
+        return PurchaseServiceImpl.builder()
+                .purchaseRepository(creator.buildPurchaseRepository())
                 .build();
     }
 }

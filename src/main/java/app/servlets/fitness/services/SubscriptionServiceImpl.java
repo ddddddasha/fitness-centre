@@ -1,19 +1,21 @@
 package app.servlets.fitness.services;
 
+import app.servlets.fitness.dto.SubscriptionDto;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import app.servlets.fitness.exseptions.SubscriptionSearchException;
+import app.servlets.fitness.mappers.SubscriptionMapper;
 import app.servlets.fitness.repositories.SubscriptionRepository;
 import lombok.Builder;
 
 import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
-import static app.servlets.fitness.util.Constants.SUBSCRIPTION_EDIT_EXCEPTION;
 
 @Builder
-public class SubscriptionServiceImpl implements SubscriptionService{
+public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionMapper subscriptionMapper = SubscriptionMapper.getInstance();
 
     @Override
     public Subscription createSubscription(Subscription subscription) {
@@ -21,7 +23,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     }
 
     @Override
-    public Subscription getById(long id) throws SubscriptionSearchException {
+    public SubscriptionDto getById(long id) throws SubscriptionSearchException {
         return subscriptionRepository.getById(id)
                 .orElseThrow(() -> new SubscriptionSearchException(SUBSCRIPTION_SEARCH_EXCEPTION));
     }
@@ -34,7 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public Subscription deleteById(long id) throws SubscriptionSearchException {
         return subscriptionRepository.deleteById(id)
-                .orElseThrow(()-> new SubscriptionSearchException(SUBSCRIPTION_DELETE_EXCEPTION));
+                .orElseThrow(() -> new SubscriptionSearchException(SUBSCRIPTION_DELETE_EXCEPTION));
     }
 
     @Override
