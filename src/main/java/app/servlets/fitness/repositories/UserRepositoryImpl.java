@@ -1,5 +1,6 @@
 package app.servlets.fitness.repositories;
 
+import app.servlets.fitness.dto.UserDto;
 import app.servlets.fitness.entities.User;
 import app.servlets.fitness.mappers.UserMapper;
 import app.servlets.fitness.util.EntityManagerHandler;
@@ -7,15 +8,19 @@ import lombok.Builder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
 import static app.servlets.fitness.util.Constants.*;
 
 @Builder
-public class UserRepositoryImpl implements UserRepository{
-    private final UserMapper userMapper;
+public class UserRepositoryImpl implements UserRepository {
+    private final UserMapper userMapper = UserMapper.getInstance();
 
     @Override
     public User createUser(User user) {
@@ -33,23 +38,34 @@ public class UserRepositoryImpl implements UserRepository{
     public List<User> readUsers() {
         try (EntityManagerHandler entityManagerHandler = new EntityManagerHandler()) {
             EntityManager entityManager = entityManagerHandler.getEntityManager();
-            TypedQuery<User> query = entityManager.createQuery(READ_USERS_QUERY, User.class);
+
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> userRoot = criteriaQuery.from(User.class);
+            criteriaQuery.select(userRoot);
+
+            Query query = entityManager.createQuery(criteriaQuery);
             return query.getResultList();
         }
     }
 
     @Override
-    public Optional<User> getByLogin(String login) {
-        try(EntityManagerHandler entityManagerHandler = new EntityManagerHandler()){
+    public Optional<UserDto> getByLogin(String login) {
+        try (EntityManagerHandler entityManagerHandler = new EntityManagerHandler()) {
             EntityManager entityManager = entityManagerHandler.getEntityManager();
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-            TypedQuery<User> query = entityManager.createQuery(GET_USER_BY_LOGIN_QUERY, User.class)
-                    .setParameter(LOGIN, login);
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<User> userCriteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = userCriteriaQuery.from(User.class);
 
-            User user = query.getSingleResult();
-            transaction.commit();
-            return Optional.ofNullable(user);
+            userCriteriaQuery.select(root)
+                    .where(criteriaBuilder.equal(root.get(LOGIN), login));
+
+            User user = entityManager.createQuery(userCriteriaQuery).getSingleResult();
+
+            UserDto userDto = userMapper.mapToDto(user);
+            return Optional.ofNullable(userDto);
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
     }
 
@@ -84,7 +100,13 @@ public class UserRepositoryImpl implements UserRepository{
             EntityManager entityManager = entityManagerHandler.getEntityManager();
             EntityTransaction transaction = entityManager.getTransaction();
             transaction.begin();
-            User updatedUser = entityManager.merge(user);
+            User updatedUser = entityManager.find(User.class, user.getId());
+            updatedUser.setFirstName(user.getFirstName());
+            updatedUser.setLastName(user.getLastName());
+            updatedUser.setDateBirthday(user.getDateBirthday());
+            updatedUser.setLogin(user.getLogin());
+            updatedUser.setPassword(user.getPassword());
+            updatedUser.setRole(user.getRole());
             transaction.commit();
             return Optional.of(updatedUser);
         }

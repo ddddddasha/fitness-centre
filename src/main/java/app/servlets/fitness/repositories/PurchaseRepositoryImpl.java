@@ -17,6 +17,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+import static app.servlets.fitness.util.Constants.*;
+
 @Builder
 public class PurchaseRepositoryImpl implements PurchaseRepository {
     private final PurchaseMapper purchaseMapper = PurchaseMapper.getInstance();
@@ -63,8 +65,8 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
 
             criteriaQuery.where(
                     criteriaBuilder.and(
-                            criteriaBuilder.equal(purchaseRoot.get("id"), purchaseId),
-                            criteriaBuilder.equal(purchaseRoot.get("user").get("id"), userId)
+                            criteriaBuilder.equal(purchaseRoot.get(ID), purchaseId),
+                            criteriaBuilder.equal(purchaseRoot.get(USER).get(ID), userId)
                     )
             );
 
@@ -73,58 +75,7 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
             entityManager.remove(purchase);
             transaction.commit();
             return Optional.of(purchase);
-            /*try {
-                Purchase purchase = query.getSingleResult();
-                entityManager.remove(purchase);
-                transaction.commit();
-                return Optional.of(purchase);
-            } catch (NoResultException ex) {
-                transaction.rollback();
-                return Optional.empty();
-            }*/
         }
-       /* try (EntityManagerHandler entityManagerHandler = new EntityManagerHandler()) {
-            EntityManager entityManager = entityManagerHandler.getEntityManager();
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-
-            User user = entityManager.find(User.class, userId);
-            if (user != null) {
-                Purchase purchase = entityManager.find(Purchase.class, purchaseId);
-                if (purchase != null && purchase.getUser().getId() == userId) {
-                    entityManager.remove(purchase);
-                    transaction.commit();
-                    return Optional.of(purchase);
-                }
-            }
-
-            transaction.rollback();
-            return Optional.empty();
-        }*/
-        /*try (EntityManagerHandler entityManagerHandler = new EntityManagerHandler()) {
-            EntityManager entityManager = entityManagerHandler.getEntityManager();
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-
-            // Найти пользователя по логину
-            User user = entityManager.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class)
-                    .setParameter("login", login)
-                    .getSingleResult();
-
-            if (user != null) {
-                // Найти покупку по ID и проверить, принадлежит ли она данному пользователю
-                Purchase purchase = entityManager.find(Purchase.class, purchaseId);
-                if (purchase != null && purchase.getUser().getId() == user.getId()) {
-                    entityManager.remove(purchase);
-                    transaction.commit();
-                    return Optional.of(purchase);
-                }
-            }
-
-            transaction.rollback();
-            return Optional.empty();
-
-        }*/
     }
 
     @Override
@@ -135,7 +86,7 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
             CriteriaQuery<Purchase> criteriaQuery = criteriaBuilder.createQuery(Purchase.class);
             Root<Purchase> root = criteriaQuery.from(Purchase.class);
 
-            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("user").get("id"), userId));
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get(USER).get(ID), userId));
 
             TypedQuery<Purchase> query = entityManager.createQuery(criteriaQuery);
             List<Purchase> purchases = query.getResultList();

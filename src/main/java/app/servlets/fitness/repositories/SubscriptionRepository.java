@@ -1,5 +1,6 @@
 package app.servlets.fitness.repositories;
 
+import app.servlets.fitness.dto.SubscriptionDto;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.entities.enums.SubscriptionCategory;
 
@@ -13,7 +14,7 @@ public interface SubscriptionRepository {
 
     List<Subscription> findBySubscriptionCategory(SubscriptionCategory subscriptionCategory);
 
-    Optional<Subscription> getById(long id);
+    Optional<SubscriptionDto> getById(long id);
 
     Optional<Subscription> deleteById(long id);
 

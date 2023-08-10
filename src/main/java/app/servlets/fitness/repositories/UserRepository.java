@@ -1,5 +1,6 @@
 package app.servlets.fitness.repositories;
 
+import app.servlets.fitness.dto.UserDto;
 import app.servlets.fitness.entities.User;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface UserRepository {
 
     List<User> readUsers();
 
-    Optional<User> getByLogin(String login);
+    Optional<UserDto> getByLogin(String login);
 
     Optional<User> deleteById(long id);
 
