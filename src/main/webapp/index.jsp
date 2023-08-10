@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/css/Navbar-With-Button-icons.css">
 </head>
 <body>
-
 <header class="p-3 text-dark bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">

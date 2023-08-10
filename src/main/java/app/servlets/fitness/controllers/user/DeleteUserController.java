@@ -1,5 +1,6 @@
 package app.servlets.fitness.controllers.user;
 
+import app.servlets.fitness.exseptions.UserSearchException;
 import app.servlets.fitness.services.UserService;
 
 import javax.servlet.ServletConfig;
@@ -18,13 +19,14 @@ public class DeleteUserController extends HttpServlet {
     private UserService userService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String userId = req.getParameter(ID);
             userService.deleteById(Long.parseLong(userId));
             resp.sendRedirect(ADMIN_READ_USERS_URL);
-        } catch (IOException e) {
-            req.setAttribute(ERROR_MESSAGE, ERROR_USER_DELETE);
+        } catch (UserSearchException e) {
+            req.setAttribute(ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(DELETE_SUBSCRIPTION_EXCEPTION_PAGE).forward(req, resp);
         }
     }
 

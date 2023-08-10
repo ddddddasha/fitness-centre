@@ -35,7 +35,7 @@
 
         <div class="mb-3">
             <label for="subscriptionPrice" class="form-label">Цена абонемента (BYN):</label>
-            <input type="number" id="subscriptionPrice" name="subscriptionPrice" class="form-control" required>
+            <input type="text" id="subscriptionPrice" name="subscriptionPrice" class="form-control" required>
         </div>
 
         <div class="mb-3">

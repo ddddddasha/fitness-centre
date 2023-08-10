@@ -1,9 +1,11 @@
 package app.servlets.fitness.repositories;
 
+import app.servlets.fitness.dto.SubscriptionDto;
 import app.servlets.fitness.entities.Subscription;
 import app.servlets.fitness.entities.enums.SubscriptionCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SubscriptionRepository {
     Subscription createSubscription(Subscription subscription);
@@ -12,11 +14,11 @@ public interface SubscriptionRepository {
 
     List<Subscription> findBySubscriptionCategory(SubscriptionCategory subscriptionCategory);
 
-    Subscription getById(long id);
+    Optional<SubscriptionDto> getById(long id);
 
-    boolean deleteById(long id);
+    Optional<Subscription> deleteById(long id);
 
-    Subscription updateSubscription(Subscription subscription);
+    Optional<Subscription> updateSubscription(Subscription subscription);
 
     SubscriptionCategory determineSubscriptionCategory(String category);
 }

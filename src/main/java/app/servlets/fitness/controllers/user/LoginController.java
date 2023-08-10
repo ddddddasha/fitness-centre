@@ -1,11 +1,10 @@
 package app.servlets.fitness.controllers.user;
 
-import app.servlets.fitness.creators.ServiceCreator;
+import app.servlets.fitness.dto.UserDto;
 import app.servlets.fitness.entities.User;
 import app.servlets.fitness.services.UserService;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +27,7 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter(LOGIN);
         String password = req.getParameter(PASSWORD);
-        User user = userService.logIn(login, password);
+        UserDto user = userService.logIn(login, password);
 
         HttpSession session = req.getSession();
 

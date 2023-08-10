@@ -2,8 +2,8 @@ package app.servlets.fitness.controllers.subscription;
 
 import app.servlets.fitness.creators.ServiceCreator;
 import app.servlets.fitness.entities.Subscription;
+import app.servlets.fitness.services.PurchaseService;
 import app.servlets.fitness.services.SubscriptionService;
-import app.servlets.fitness.services.SubscriptionServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static app.servlets.fitness.util.Constants.*;
+import static app.servlets.fitness.util.Constants.PURCHASE_SERVICE;
 
 @WebServlet(urlPatterns = "/subscription", loadOnStartup = 0)
 public class ReadSubscriptionController extends HttpServlet {
@@ -34,8 +35,12 @@ public class ReadSubscriptionController extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+
         ServiceCreator serviceCreator = new ServiceCreator();
         subscriptionService = serviceCreator.buildSubscriptionService();
         config.getServletContext().setAttribute(SUBSCRIPTION_SERVICE, subscriptionService);
+
+        PurchaseService purchaseService = serviceCreator.buildPurchaseService();
+        config.getServletContext().setAttribute(PURCHASE_SERVICE, purchaseService);
     }
 }

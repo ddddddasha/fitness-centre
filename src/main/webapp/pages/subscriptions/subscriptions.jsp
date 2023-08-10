@@ -38,9 +38,13 @@
                     <c:if test="${sessionScope.role eq 'ADMIN'}">
                         <div class="d-flex justify-content-between">
                             <a href="/subscription/edit?id=${subscription.id}" class="btn btn-primary">Редактировать</a>
-                            <a href="/subscription/delete?id=${subscription.id}" class="btn btn-danger me-1">Удалить</a>
+                            <form action="/subscription/delete" method="post">
+                                <input type="hidden" name="id" value="${subscription.id}" />
+                                <button type="submit" class="btn btn-danger me-1">Удалить</button>
+                            </form>
                         </div>
                     </c:if>
+
                     <c:if test="${sessionScope.role eq 'CLIENT'}">
                         <div class="d-flex justify-content-between">
                             <a href="/subscription/buy?id=${subscription.id}" class="btn btn-danger me-1">Buy</a>
