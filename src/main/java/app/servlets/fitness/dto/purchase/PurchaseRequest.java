@@ -19,13 +19,12 @@ public class PurchaseRequest {
 
     private SubscriptionRequest subscriptionRequest;
 
-    @NotNull(message = "Amount cannot be null")
-    @DecimalMin(value = "0.01", message = "Amount must be greater than or equal to 0.01")
+    @NotNull
     private BigDecimal amountBYN;
 
-    @NotNull(message = "Payment date cannot be null")
+    @NotNull
     private LocalDateTime paymentDate;
 
-    @NotNull(message = "Payment status cannot be null")
+    @NotNull
     private PaymentStatus paymentStatus;
 }
