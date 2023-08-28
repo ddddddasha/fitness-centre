@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: fitness-centre
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8888
+  profiles:
+    active: dev
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fitness-centre
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+server:
+  port: 8080
