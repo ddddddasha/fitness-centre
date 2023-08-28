@@ -30,8 +30,8 @@ public class SubscriptionController {
     }
 
     @PutMapping(value = "/subscription/{id}")
-    public SubscriptionResponse update(@PathVariable @Min(1) Long id, @Valid @RequestBody SubscriptionRequest roomRequest) {
-        return subscriptionService.update(id, roomRequest);
+    public SubscriptionResponse update(@PathVariable Long id, @Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+        return subscriptionService.update(id, subscriptionRequest);
     }
 
     @DeleteMapping(value = "/subscription/{id}")
@@ -40,7 +40,7 @@ public class SubscriptionController {
     }
 
     @GetMapping(value = "/subscription/{id}")
-    public SubscriptionResponse findRoomById(@PathVariable @Min(1) Long id) {
+    public SubscriptionResponse findSubscriptionById(@PathVariable @Min(1) Long id) {
         return subscriptionService.findById(id);
     }
 

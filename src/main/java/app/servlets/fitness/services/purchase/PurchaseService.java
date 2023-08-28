@@ -10,7 +10,7 @@ public interface PurchaseService {
 
     List<PurchaseResponse> read();
 
-    PurchaseResponse update(Long id, PurchaseRequest bookingRequest);
+    PurchaseResponse update(Long id, PurchaseRequest purchaseRequest);
 
     boolean delete(Long id);
 
