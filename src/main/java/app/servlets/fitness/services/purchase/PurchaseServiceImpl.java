@@ -48,7 +48,7 @@ public class PurchaseServiceImpl implements PurchaseService{
         Optional<Purchase> optionalPurchase = purchaseRepository.findById(id);
         return optionalPurchase.map(purchase -> purchaseMapper.updatePurchase(purchase, purchaseRequest))
                 .map(purchaseMapper::buildPurchaseResponse)
-                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION));
+                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
     }
 
     @Override
@@ -62,6 +62,6 @@ public class PurchaseServiceImpl implements PurchaseService{
     public PurchaseResponse findByID(Long id) {
         Optional<Purchase> optionalPurchase = purchaseRepository.findById(id);
         return optionalPurchase.map(purchaseMapper::buildPurchaseResponse)
-                .orElseThrow(() -> new EntityNotFoundException(ERROR_SEARCH_PURCHASE_EXCEPTION));
+                .orElseThrow(() -> new EntityNotFoundException(ERROR_SEARCH_PURCHASE_EXCEPTION + id));
     }
 }

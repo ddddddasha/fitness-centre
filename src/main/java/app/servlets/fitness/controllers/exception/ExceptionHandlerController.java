@@ -83,8 +83,6 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
-
-
         log.warn("Validation Exception: {}", exception.getMessage());
         return ErrorResponse.builder()
                 .message(exception.getMessage())

@@ -34,7 +34,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     public SubscriptionResponse findById(Long id) {
         Optional<Subscription> optionalSubscription = subscriptionRepository.findById(id);
         return optionalSubscription.map(subscriptionMapper::buildSubscriptionResponse)
-                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION));
+                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
         Optional<Subscription> optionalSubscription = subscriptionRepository.findById(id);
         return optionalSubscription.map(subscription -> subscriptionMapper.updateSubscription(subscription, subscriptionRequest))
                 .map(subscriptionMapper::buildSubscriptionResponse)
-                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION));
+                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
     }
 
 }
