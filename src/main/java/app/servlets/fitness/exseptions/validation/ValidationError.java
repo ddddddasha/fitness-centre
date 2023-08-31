@@ -11,5 +11,5 @@ import lombok.Getter;
 public class ValidationError {
 
     private final String message;
-    private final String fieldName;
+    private final String fieldError;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public class ValidationErrorResponse {
     private final List<ValidationError> validationErrors;
-    private final String fieldName;
+    private final String fieldError;
     private final String message;
     private final LocalDateTime time;
     private final HttpStatus status;
