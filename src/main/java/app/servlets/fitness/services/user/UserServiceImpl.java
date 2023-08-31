@@ -37,11 +37,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse update(Long id, UserRequest userRequest) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.map(user -> userMapper.updateUser(user, userRequest))
-                .map(userRepository::save)
-                .map(user -> userMapper.buildUserResponse(user, purchaseMapper))
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_EXCEPTION + id));
+        userMapper.updateUser(user, userRequest);
+        return userMapper.buildUserResponse(userRepository.save(user), purchaseMapper);
     }
 
     @Override
@@ -53,9 +52,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse findUserById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.map(user -> userMapper.buildUserResponse(user, purchaseMapper))
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_EXCEPTION + id));
+        return userMapper.buildUserResponse(user, purchaseMapper);
     }
 
     @Override
@@ -65,8 +64,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse findUserByLogin(String login) {
-        Optional<User> optionalUser = userRepository.findUserByLogin(login);
-        return optionalUser.map(user -> userMapper.buildUserResponse(user, purchaseMapper))
+        User user = userRepository.findUserByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_BY_LOGIN_EXCEPTION + login));
+        return userMapper.buildUserResponse(user, purchaseMapper);
     }
 }

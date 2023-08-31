@@ -19,12 +19,12 @@ public class PurchaseRequest {
 
     private SubscriptionRequest subscriptionRequest;
 
-    @NotNull
+    @NotNull(message = "Amount cannot be null")
     private BigDecimal amountBYN;
 
-    @NotNull
+    @NotNull(message = "Payment date cannot be null")
     private LocalDateTime paymentDate;
 
-    @NotNull
+    @NotNull(message = "Payment status cannot be null")
     private PaymentStatus paymentStatus;
 }

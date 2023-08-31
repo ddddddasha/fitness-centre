@@ -33,7 +33,7 @@ public class PurchaseServiceImpl implements PurchaseService{
         Optional<User> optionalUser = userService.findUserByIdForPurchase(purchaseRequest.getUserRequest().getUserId());
         Optional<Subscription> optionalSubscription = subscriptionService.findSubscriptionByIdForPurchase(purchaseRequest.getSubscriptionRequest().getId());
         PurchaseResponse purchaseResponse = purchaseMapper.makePurchase(purchase, optionalUser, optionalSubscription);
-        Purchase savedPurchase = purchaseRepository.save(purchase);
+        purchaseRepository.save(purchase);
         return purchaseResponse;
     }
 
@@ -45,10 +45,10 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Override
     public PurchaseResponse update(Long id, PurchaseRequest purchaseRequest) {
-        Optional<Purchase> optionalPurchase = purchaseRepository.findById(id);
-        return optionalPurchase.map(purchase -> purchaseMapper.updatePurchase(purchase, purchaseRequest))
-                .map(purchaseMapper::buildPurchaseResponse)
+        Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
+        purchaseMapper.updatePurchase(purchase, purchaseRequest);
+        return purchaseMapper.buildPurchaseResponse(purchaseRepository.save(purchase));
     }
 
     @Override
@@ -60,8 +60,8 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Override
     public PurchaseResponse findByID(Long id) {
-        Optional<Purchase> optionalPurchase = purchaseRepository.findById(id);
-        return optionalPurchase.map(purchaseMapper::buildPurchaseResponse)
+        Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ERROR_SEARCH_PURCHASE_EXCEPTION + id));
+        return purchaseMapper.buildPurchaseResponse(purchase);
     }
 }

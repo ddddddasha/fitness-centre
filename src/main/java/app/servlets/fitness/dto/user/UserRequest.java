@@ -16,23 +16,22 @@ public class UserRequest {
 
     private Long userId;
 
-    @NotBlank
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @NotNull
+    @NotNull(message = "Date of birth cannot be null")
     private LocalDate dateBirthday;
 
-    @NotBlank
+    @NotBlank(message = "Login cannot be blank")
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Role cannot be null")
     private Role role;
 
-    private List<PurchaseResponse> purchases;
 }

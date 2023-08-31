@@ -12,24 +12,20 @@ public class SubscriptionRequest {
 
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Subscription category cannot be null")
     private SubscriptionCategory subscriptionCategory;
 
-    @NotBlank
+    @NotBlank(message = "Subscription name cannot be blank")
     private String subscriptionName;
 
-    @NotNull
+    @NotNull(message = "Subscription price cannot be null")
     private BigDecimal subscriptionPrice;
 
-    @Min(value = 1)
     private int subscriptionDaysNumber;
 
-    @Min(value = 0)
     private int numberGuestVisitDays;
 
-    @Min(value = 0)
     private int numberSubscriptionStopDays;
 
-    @Size(max = 255)
     private String description;
 }

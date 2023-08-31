@@ -3,14 +3,12 @@ package app.servlets.fitness.services.subscription;
 import app.servlets.fitness.dto.subscription.SubscriptionRequest;
 import app.servlets.fitness.dto.subscription.SubscriptionResponse;
 import app.servlets.fitness.entities.Subscription;
-import app.servlets.fitness.entities.enums.SubscriptionCategory;
 import app.servlets.fitness.exseptions.subscription.SubscriptionNotFoundException;
 import app.servlets.fitness.mappers.SubscriptionMapper;
 import app.servlets.fitness.repositories.subscription.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +30,14 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public SubscriptionResponse findById(Long id) {
-        Optional<Subscription> optionalSubscription = subscriptionRepository.findById(id);
-        return optionalSubscription.map(subscriptionMapper::buildSubscriptionResponse)
+        Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
+        return subscriptionMapper.buildSubscriptionResponse(subscription);
     }
 
     @Override
     public Optional<Subscription> findSubscriptionByIdForPurchase(Long id) {
-       return subscriptionRepository.findById(id);
+        return subscriptionRepository.findById(id);
     }
 
     @Override
@@ -57,10 +55,10 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public SubscriptionResponse update(Long id, SubscriptionRequest subscriptionRequest) {
-        Optional<Subscription> optionalSubscription = subscriptionRepository.findById(id);
-        return optionalSubscription.map(subscription -> subscriptionMapper.updateSubscription(subscription, subscriptionRequest))
-                .map(subscriptionMapper::buildSubscriptionResponse)
+        Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
+        subscriptionMapper.updateSubscription(subscription, subscriptionRequest);
+        return subscriptionMapper.buildSubscriptionResponse(subscription);
     }
 
 }
