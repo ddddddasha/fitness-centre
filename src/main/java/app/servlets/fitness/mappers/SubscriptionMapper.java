@@ -20,5 +20,5 @@ public interface SubscriptionMapper {
 
     SubscriptionResponse mapSubscriptionToSubscriptionResponse(Subscription subscription);
 
-    Subscription updateSubscription(@MappingTarget Subscription subscription, SubscriptionRequest subscriptionRequest);//НЕ ОБНОВЛЯЕТ
+    Subscription updateSubscription(@MappingTarget Subscription subscription, SubscriptionRequest subscriptionRequest);
 }

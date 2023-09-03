@@ -23,9 +23,6 @@ public interface PurchaseMapper {
     Purchase purchaseRequestToPurchase(PurchaseRequest purchaseRequest);
     PurchaseResponse purchaseToPurchaseResponse(Purchase purchase);
     List<PurchaseResponse> purchasesToPurchaseResponses(List<Purchase> purchases);
-    @Mapping(target = "subscriptionResponse", source = "purchase.subscription")
-    @Mapping(target = "userResponse", source = "purchase.user", qualifiedByName = "mapUserToUserResponse")
-    PurchaseResponse makePurchase(Purchase purchase, Optional<User> optionalUser, Optional<Subscription> optionalSubscription);
     @Mapping(target = "amountBYN", source = "purchaseRequest.amountBYN")
     @Mapping(target = "paymentDate", source = "purchaseRequest.paymentDate")
     @Mapping(target = "paymentStatus", source = "purchaseRequest.paymentStatus")

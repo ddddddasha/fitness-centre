@@ -32,7 +32,7 @@ public class PurchaseServiceImpl implements PurchaseService{
         Purchase purchase = purchaseMapper.purchaseRequestToPurchase(purchaseRequest);
         Optional<User> optionalUser = userService.findUserByIdForPurchase(purchaseRequest.getUserRequest().getUserId());
         Optional<Subscription> optionalSubscription = subscriptionService.findSubscriptionByIdForPurchase(1L);
-        PurchaseResponse purchaseResponse = purchaseMapper.makePurchase(purchase, optionalUser, optionalSubscription);
+        //PurchaseResponse purchaseResponse = purchaseMapper.makePurchase(purchase, optionalUser, optionalSubscription);
         purchaseRepository.save(purchase);
         return purchaseResponse;
     }
