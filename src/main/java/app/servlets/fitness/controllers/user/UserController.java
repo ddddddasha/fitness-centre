@@ -3,11 +3,11 @@ package app.servlets.fitness.controllers.user;
 import app.servlets.fitness.dto.user.UserRequest;
 import app.servlets.fitness.dto.user.UserResponse;
 import app.servlets.fitness.services.user.UserService;
+import app.servlets.fitness.aspects.ExcludeLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -21,6 +21,7 @@ public class UserController {
         return userService.create(userRequest);
     }
 
+    @ExcludeLog
     @GetMapping(value = "/users")
     public List<UserResponse> read() {
         return userService.read();
@@ -37,12 +38,12 @@ public class UserController {
     }
 
     @PutMapping(value = "/user/{id}")
-    public UserResponse update(@PathVariable @Min(1) Long id, @Valid @RequestBody UserRequest userRequest) {
+    public UserResponse update(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
         return userService.update(id, userRequest);
     }
 
     @DeleteMapping(value = "/user/{id}")
-    public boolean delete(@PathVariable @Min(1) Long id) {
+    public boolean delete(@PathVariable Long id) {
         return userService.delete(id);
     }
 }

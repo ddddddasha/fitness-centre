@@ -6,25 +6,22 @@ import app.servlets.fitness.entities.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import static app.servlets.fitness.util.Constants.*;
+import static app.servlets.fitness.util.Constants.INVALID_PAYMENT_STATUS;
+
 @Data
 @Builder
 public class PurchaseRequest {
-
     private UserRequest userRequest;
-
     private SubscriptionRequest subscriptionRequest;
-
-    @NotNull(message = "Amount cannot be null")
+    @NotNull(message = INVALID_AMOUNT)
     private BigDecimal amountBYN;
-
-    @NotNull(message = "Payment date cannot be null")
+    @NotNull(message = INVALID_PAYMENT_DATE)
     private LocalDateTime paymentDate;
-
-    @NotNull(message = "Payment status cannot be null")
+    @NotNull(message = INVALID_PAYMENT_STATUS)
     private PaymentStatus paymentStatus;
 }

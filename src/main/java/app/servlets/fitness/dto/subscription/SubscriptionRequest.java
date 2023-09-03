@@ -6,26 +6,20 @@ import lombok.Data;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
+import static app.servlets.fitness.util.Constants.*;
+import static app.servlets.fitness.util.Constants.INVALID_SUBSCRIPTION_PRICE;
+
 @Data
 @Builder
 public class SubscriptionRequest {
-
-    private Long id;
-
-    @NotNull(message = "Subscription category cannot be null")
+    @NotNull(message = INVALID_SUBSCRIPTION_CATEGORY)
     private SubscriptionCategory subscriptionCategory;
-
-    @NotBlank(message = "Subscription name cannot be blank")
+    @NotBlank(message = INVALID_SUBSCRIPTION_NAME)
     private String subscriptionName;
-
-    @NotNull(message = "Subscription price cannot be null")
+    @NotNull(message = INVALID_SUBSCRIPTION_PRICE)
     private BigDecimal subscriptionPrice;
-
     private int subscriptionDaysNumber;
-
     private int numberGuestVisitDays;
-
     private int numberSubscriptionStopDays;
-
     private String description;
 }

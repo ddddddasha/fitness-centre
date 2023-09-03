@@ -22,9 +22,9 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public SubscriptionResponse create(SubscriptionRequest subscriptionRequest) {
-        Subscription subscription = subscriptionMapper.buildSubscription(subscriptionRequest);
+        Subscription subscription = subscriptionMapper.mapSubscriptionRequestToSubscription(subscriptionRequest);
         Optional<Subscription> optionalSubscription = Optional.of(subscriptionRepository.save(subscription));
-        return optionalSubscription.map(subscriptionMapper::buildSubscriptionResponse)
+        return optionalSubscription.map(subscriptionMapper::mapSubscriptionToSubscriptionResponse)
                 .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_CREATION_EXCEPTION));
     }
 
@@ -32,7 +32,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     public SubscriptionResponse findById(Long id) {
         Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
-        return subscriptionMapper.buildSubscriptionResponse(subscription);
+        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(subscription);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public List<SubscriptionResponse> read() {
         List<Subscription> subscriptions = subscriptionRepository.findAll();
-        return subscriptionMapper.buildSubscriptionsResponse(subscriptions);
+        return subscriptionMapper.mapSubscriptionsToSubscriptionResponses(subscriptions);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     public SubscriptionResponse update(Long id, SubscriptionRequest subscriptionRequest) {
         Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
-        subscriptionMapper.updateSubscription(subscription, subscriptionRequest);
-        return subscriptionMapper.buildSubscriptionResponse(subscription);
+        subscriptionMapper.updateSubscription(subscription, subscriptionRequest);//ТУТ НЕПРАВИЛЬНО ПЕРЕДЕЛАТЬ НЕ ЛОГИЧНО
+        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(subscription);
     }
 
 }

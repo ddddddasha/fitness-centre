@@ -8,30 +8,23 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
+
+import static app.servlets.fitness.util.Constants.*;
 
 @Data
 @Builder
 public class UserRequest {
-
     private Long userId;
-
-    @NotBlank(message = "First name cannot be blank")
+    @NotBlank(message = INVALID_FIRST_NAME)
     private String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
+    @NotBlank(message = INVALID_LAST_NAME)
     private String lastName;
-
-    @NotNull(message = "Date of birth cannot be null")
+    @NotNull(message = INVALID_DATE_OF_BIRTH)
     private LocalDate dateBirthday;
-
-    @NotBlank(message = "Login cannot be blank")
+    @NotBlank(message = INVALID_LOGIN)
     private String login;
-
-    @NotBlank(message = "Password cannot be blank")
+    @NotBlank(message = INVALID_PASSWORD)
     private String password;
-
-    @NotNull(message = "Role cannot be null")
+    @NotNull(message = INVALID_ROLE)
     private Role role;
-
 }

@@ -3,6 +3,32 @@ package app.servlets.fitness.util;
 public class Constants {
 
     /**
+     * log patterns
+     */
+    public static final String REQUEST_LOG_PATTERN = "{} -> {} : {}";
+    public static final String RESPONSE_LOG_PATTERN = "{} -> {} : {}, response : {}";
+    public static final String ARGUMENT_LOG_PATTERN = "Method arguments: {}";
+    public static final String RESPONSE = "response";
+    public static final String EMPTY = "";
+
+
+    /**
+     * invalid messages
+     */
+    public static final String INVALID_AMOUNT = "Amount cannot be null";
+    public static final String INVALID_PAYMENT_DATE = "Payment date cannot be null";
+    public static final String INVALID_PAYMENT_STATUS = "Payment status cannot be null";
+    public static final String INVALID_SUBSCRIPTION_CATEGORY = "Subscription category cannot be null";
+    public static final String INVALID_SUBSCRIPTION_NAME = "Subscription name cannot be blank";
+    public static final String INVALID_SUBSCRIPTION_PRICE = "Subscription price cannot be null";
+    public static final String INVALID_FIRST_NAME = "First name cannot be blank";
+    public static final String INVALID_LAST_NAME = "Last name cannot be blank";
+    public static final String INVALID_DATE_OF_BIRTH = "Date of birth cannot be null";
+    public static final String INVALID_LOGIN = "Login cannot be blank";
+    public static final String INVALID_PASSWORD = "Password cannot be blank";
+    public static final String INVALID_ROLE = "Role cannot be null";
+
+    /**
      * subscription fields
      */
     public static final String SUBSCRIPTION = "subscription";

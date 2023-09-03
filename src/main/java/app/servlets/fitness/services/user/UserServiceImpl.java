@@ -20,19 +20,18 @@ import static app.servlets.fitness.util.Constants.*;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final PurchaseMapper purchaseMapper;
 
     @Override
     public UserResponse create(UserRequest userRequest){
-        User user = userMapper.buildUser(userRequest);
+        User user = userMapper.mapUserRequestToUser(userRequest);
         userRepository.save(user);
-        return userMapper.buildUserResponse(user, purchaseMapper);
+        return userMapper.mapUserToUserResponse(user);
     }
 
     @Override
     public List<UserResponse> read() {
         List<User> users = userRepository.findAll();
-        return userMapper.buildUsersResponses(users, purchaseMapper);
+        return userMapper.mapUsersToUserResponses(users);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_EXCEPTION + id));
         userMapper.updateUser(user, userRequest);
-        return userMapper.buildUserResponse(userRepository.save(user), purchaseMapper);
+        return userMapper.mapUserToUserResponse(userRepository.save(user));
     }
 
     @Override
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService{
     public UserResponse findUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_EXCEPTION + id));
-        return userMapper.buildUserResponse(user, purchaseMapper);
+        return userMapper.mapUserToUserResponse(user);
     }
 
     @Override
@@ -66,6 +65,6 @@ public class UserServiceImpl implements UserService{
     public UserResponse findUserByLogin(String login) {
         User user = userRepository.findUserByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(USER_SEARCH_BY_LOGIN_EXCEPTION + login));
-        return userMapper.buildUserResponse(user, purchaseMapper);
+        return userMapper.mapUserToUserResponse(user);
     }
 }

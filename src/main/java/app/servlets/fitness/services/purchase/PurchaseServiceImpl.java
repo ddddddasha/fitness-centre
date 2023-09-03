@@ -29,9 +29,9 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Override
     public PurchaseResponse create(PurchaseRequest purchaseRequest) {
-        Purchase purchase = purchaseMapper.buildPurchase(purchaseRequest);
+        Purchase purchase = purchaseMapper.purchaseRequestToPurchase(purchaseRequest);
         Optional<User> optionalUser = userService.findUserByIdForPurchase(purchaseRequest.getUserRequest().getUserId());
-        Optional<Subscription> optionalSubscription = subscriptionService.findSubscriptionByIdForPurchase(purchaseRequest.getSubscriptionRequest().getId());
+        Optional<Subscription> optionalSubscription = subscriptionService.findSubscriptionByIdForPurchase(1L);
         PurchaseResponse purchaseResponse = purchaseMapper.makePurchase(purchase, optionalUser, optionalSubscription);
         purchaseRepository.save(purchase);
         return purchaseResponse;
@@ -40,7 +40,7 @@ public class PurchaseServiceImpl implements PurchaseService{
     @Override
     public List<PurchaseResponse> read() {
         List<Purchase> purchases = purchaseRepository.findAll();
-        return purchaseMapper.buildPurchasesResponse(purchases);
+        return purchaseMapper.purchasesToPurchaseResponses(purchases);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PurchaseServiceImpl implements PurchaseService{
         Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
         purchaseMapper.updatePurchase(purchase, purchaseRequest);
-        return purchaseMapper.buildPurchaseResponse(purchaseRepository.save(purchase));
+        return purchaseMapper.purchaseToPurchaseResponse(purchaseRepository.save(purchase));
     }
 
     @Override
@@ -62,6 +62,6 @@ public class PurchaseServiceImpl implements PurchaseService{
     public PurchaseResponse findByID(Long id) {
         Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ERROR_SEARCH_PURCHASE_EXCEPTION + id));
-        return purchaseMapper.buildPurchaseResponse(purchase);
+        return purchaseMapper.purchaseToPurchaseResponse(purchase);
     }
 }
