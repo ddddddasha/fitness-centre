@@ -35,12 +35,12 @@ public class SubscriptionController {
     }
 
     @DeleteMapping(value = "/subscription/{id}")
-    public boolean delete(@PathVariable @Min(1) Long id) {
+    public boolean delete(@PathVariable Long id) {
         return subscriptionService.delete(id);
     }
 
     @GetMapping(value = "/subscription/{id}")
-    public SubscriptionResponse findSubscriptionById(@PathVariable @Min(1) Long id) {
+    public SubscriptionResponse findSubscriptionById(@PathVariable Long id) {
         return subscriptionService.findById(id);
     }
 
