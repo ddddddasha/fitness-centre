@@ -32,6 +32,7 @@ public class UserController {
         return userService.findUserById(id);
     }
 
+    @ExcludeLog
     @GetMapping(value = "/userByLogin/{login}")
     public UserResponse findUserByLogin(@PathVariable String login) {
         return userService.findUserByLogin(login);
