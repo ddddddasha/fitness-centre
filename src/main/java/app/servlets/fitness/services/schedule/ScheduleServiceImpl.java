@@ -14,7 +14,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleClient scheduleClient;
 
     @Override
-    public List<ScheduleResponse> getSchedule() { //только по дате а не по дню недели
+    public List<ScheduleResponse> getSchedule() {
         return scheduleClient.getSchedule();
     }
 }
