@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class PurchaseController {
+
     private final PurchaseService purchaseService;
 
     @PostMapping(value = "/purchase")
@@ -28,13 +29,18 @@ public class PurchaseController {
         return purchaseService.read();
     }
 
+    @GetMapping(value = "/purchaseById/{id}")
+    public PurchaseResponse findById(@PathVariable Long id){
+        return purchaseService.findById(id);
+    }
+
     @PutMapping(value = "/purchase/{id}")
     public PurchaseResponse update(@PathVariable Long id, @Valid @RequestBody PurchaseRequest purchaseRequest) {
         return purchaseService.update(id, purchaseRequest);
     }
 
     @DeleteMapping(value = "/purchase/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return purchaseService.delete(id);
+    public void delete(@PathVariable Long id) {
+        purchaseService.delete(id);
     }
 }

@@ -13,6 +13,6 @@ public interface SubscriptionService {
     SubscriptionResponse findById(Long id);
     Optional<Subscription> findSubscriptionByIdForPurchase(Long id);
     List<SubscriptionResponse> read();
-    boolean delete(Long id);
+    void delete(Long id);
     SubscriptionResponse update(Long id, SubscriptionRequest subscriptionRequest);
 }

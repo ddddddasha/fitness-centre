@@ -1,7 +1,5 @@
 package app.servlets.fitness.dto.purchase;
 
-import app.servlets.fitness.dto.subscription.SubscriptionRequest;
-import app.servlets.fitness.dto.user.UserRequest;
 import app.servlets.fitness.entities.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.Data;
@@ -11,17 +9,17 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static app.servlets.fitness.util.Constants.*;
-import static app.servlets.fitness.util.Constants.INVALID_PAYMENT_STATUS;
 
 @Data
 @Builder
 public class PurchaseRequest {
-    private UserRequest userRequest;
-    private SubscriptionRequest subscriptionRequest;
+
+    @NotNull(message = INVALID_USER_ID)
+    private Long userId;
+    @NotNull(message = INVALID_SUBSCRIPTION_ID)
+    private Long subscriptionId;
     @NotNull(message = INVALID_AMOUNT)
-    private BigDecimal amountBYN;
-    @NotNull(message = INVALID_PAYMENT_DATE)
+    private BigDecimal amount;
     private LocalDateTime paymentDate;
-    @NotNull(message = INVALID_PAYMENT_STATUS)
     private PaymentStatus paymentStatus;
 }

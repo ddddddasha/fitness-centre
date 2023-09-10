@@ -1,6 +1,5 @@
 package app.servlets.fitness.dto.user;
 
-import app.servlets.fitness.dto.purchase.PurchaseResponse;
 import app.servlets.fitness.entities.enums.Role;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +13,7 @@ import static app.servlets.fitness.util.Constants.*;
 @Data
 @Builder
 public class UserRequest {
+
     private Long userId;
     @NotBlank(message = INVALID_FIRST_NAME)
     private String firstName;

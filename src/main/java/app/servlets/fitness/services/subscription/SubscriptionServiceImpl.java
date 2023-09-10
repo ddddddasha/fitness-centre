@@ -3,62 +3,68 @@ package app.servlets.fitness.services.subscription;
 import app.servlets.fitness.dto.subscription.SubscriptionRequest;
 import app.servlets.fitness.dto.subscription.SubscriptionResponse;
 import app.servlets.fitness.entities.Subscription;
-import app.servlets.fitness.exseptions.subscription.SubscriptionNotFoundException;
 import app.servlets.fitness.mappers.SubscriptionMapper;
 import app.servlets.fitness.repositories.subscription.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import static app.servlets.fitness.util.Constants.*;
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
-public class SubscriptionServiceImpl implements SubscriptionService{
+public class SubscriptionServiceImpl implements SubscriptionService {
+
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionMapper subscriptionMapper;
 
     @Override
+    @Transactional
     public SubscriptionResponse create(SubscriptionRequest subscriptionRequest) {
         Subscription subscription = subscriptionMapper.mapSubscriptionRequestToSubscription(subscriptionRequest);
-        Optional<Subscription> optionalSubscription = Optional.of(subscriptionRepository.save(subscription));
-        return optionalSubscription.map(subscriptionMapper::mapSubscriptionToSubscriptionResponse)
-                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_CREATION_EXCEPTION));
+        Subscription savedSubscription = subscriptionRepository.save(subscription);
+        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(savedSubscription);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SubscriptionResponse findById(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
-        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(subscription);
+        return subscriptionRepository.findById(id)
+                .map(subscriptionMapper::mapSubscriptionToSubscriptionResponse)
+                .orElseThrow(() -> new EntityNotFoundException(format(USER_SEARCH_EXCEPTION, id)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Subscription> findSubscriptionByIdForPurchase(Long id) {
         return subscriptionRepository.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SubscriptionResponse> read() {
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         return subscriptionMapper.mapSubscriptionsToSubscriptionResponses(subscriptions);
     }
 
     @Override
-    public boolean delete(Long id) {
-        Optional<Subscription> optionalSubscription = subscriptionRepository.findById(id);
-        optionalSubscription.ifPresent(subscriptionRepository::delete);
-        return optionalSubscription.isPresent();
+    @Transactional
+    public void delete(Long id) {
+        subscriptionRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public SubscriptionResponse update(Long id, SubscriptionRequest subscriptionRequest) {
         Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new SubscriptionNotFoundException(SUBSCRIPTION_SEARCH_EXCEPTION + id));
-        subscriptionMapper.updateSubscription(subscription, subscriptionRequest);//ТУТ НЕПРАВИЛЬНО ПЕРЕДЕЛАТЬ НЕ ЛОГИЧНО
-        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(subscription);
+                .orElseThrow(() -> new EntityNotFoundException(format(SUBSCRIPTION_SEARCH_EXCEPTION, id)));
+        subscriptionMapper.updateSubscription(subscription, subscriptionRequest);
+        Subscription updatedSubscription = subscriptionRepository.save(subscription);
+        return subscriptionMapper.mapSubscriptionToSubscriptionResponse(updatedSubscription);
     }
-
 }

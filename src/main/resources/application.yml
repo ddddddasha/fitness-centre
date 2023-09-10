@@ -4,8 +4,24 @@ spring:
   cloud:
     config:
       enabled: true
-      uri: http://localhost:8888
   profiles:
-    active: test
+    active:
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
 server:
   port: 8080
+
+hashing:
+  algorithm_pbkdf2: "PBKDF2WithHmacSHA256"
+  split_for_pbkdf2: ":"
+  zero: 0
+  one: 1
+  salt_length: 16
+  iterations: 100000
+  key_length: 256

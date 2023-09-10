@@ -11,8 +11,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static app.servlets.fitness.util.Constants.*;
 
@@ -20,6 +20,7 @@ import static app.servlets.fitness.util.Constants.*;
 @Aspect
 @Component
 public class AspectController {
+
     @Pointcut("execution(* app.servlets.fitness.controllers..*(..)) && !@annotation(ExcludeLog)")
     public void pointCut(){
     }
@@ -45,9 +46,7 @@ public class AspectController {
     }
 
     private void logMethodArguments(JoinPoint joinPoint) {
-        Object[] methodArgs = joinPoint.getArgs();
-        if (methodArgs.length > 0) {
-            log.info(ARGUMENT_LOG_PATTERN, Arrays.toString(methodArgs));
-        }
+        Stream.of(joinPoint.getArgs())
+                .forEach(o -> log.info(ARGUMENT_LOG_PATTERN, o));
     }
 }

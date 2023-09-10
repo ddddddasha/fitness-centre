@@ -11,13 +11,12 @@ public class Constants {
     public static final String RESPONSE = "response";
     public static final String EMPTY = "";
 
-
     /**
      * invalid messages
      */
     public static final String INVALID_AMOUNT = "Amount cannot be null";
-    public static final String INVALID_PAYMENT_DATE = "Payment date cannot be null";
-    public static final String INVALID_PAYMENT_STATUS = "Payment status cannot be null";
+    public static final String INVALID_USER_ID = "User id cannot be null";
+    public static final String INVALID_SUBSCRIPTION_ID = "Subscription id cannot be null";
     public static final String INVALID_SUBSCRIPTION_CATEGORY = "Subscription category cannot be null";
     public static final String INVALID_SUBSCRIPTION_NAME = "Subscription name cannot be blank";
     public static final String INVALID_SUBSCRIPTION_PRICE = "Subscription price cannot be null";
@@ -41,34 +40,20 @@ public class Constants {
     public static final String PURCHASE_TABLE = "PURCHASE";
     public static final String USER_ID = "USER_ID";
     public static final String SUBSCRIPTION_ID = "SUBSCRIPTION_ID";
-    public static final String AMOUNT_BYN = "AMOUNT_BYN";
+    public static final String AMOUNT = "AMOUNT";
     public static final String PAYMENT_DATE = "PAYMENT_DATE";
     public static final String PAYMENT_STATUS = "PAYMENT_STATUS";
-
 
     /**
      * errors
      */
-    public static final String USER_SEARCH_EXCEPTION = "User is not present by id: ";
-    public static final String USER_SEARCH_BY_LOGIN_EXCEPTION = "User is not present by login: ";
+    public static final String USER_SEARCH_EXCEPTION = "User is not present by id: %s";
+    public static final String USER_SEARCH_BY_LOGIN_EXCEPTION = "User is not present by login: %s";
     public static final String EXCEPTION = "EXCEPTION {}";
     public static final String VALIDATION_ERROR = "Validation Error: {}";
-    public static final String SUBSCRIPTION_CREATION_EXCEPTION = "Subscription CREATING failed";
-    public static final String SUBSCRIPTION_SEARCH_EXCEPTION = "Subscription is not present by id: ";
-    public static final String ERROR_SEARCH_PURCHASE_EXCEPTION = "The PURCHASE not found";
-
-
-    /**
-     * Password hashing
-     */
-    public static final String ALGORITHM_PBKDF2 = "PBKDF2WithHmacSHA256";
-    public static final String SPLIT_FOR_PBKDF2 = ":";
-    public static final int ZERO = 0;
-    public static final int ONE = 1;
-    public static final int SALT_LENGTH = 16;
-    public static final int ITERATIONS = 100000;
-    public static final int KEY_LENGTH = 256;
-
+    public static final String ERROR_SEARCH_EXCEPTION = "Purchase CREATING failed. Subscription or user not found";
+    public static final String SUBSCRIPTION_SEARCH_EXCEPTION = "Subscription is not present by id: %s";
+    public static final String ERROR_SEARCH_PURCHASE_EXCEPTION = "Purchase is not present by id: %s";
 
     /**
      * fields for db

@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class SubscriptionController {
+
     private final SubscriptionService subscriptionService;
 
     @PostMapping(value = "/subscription")
@@ -35,8 +35,8 @@ public class SubscriptionController {
     }
 
     @DeleteMapping(value = "/subscription/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return subscriptionService.delete(id);
+    public void delete(@PathVariable Long id) {
+        subscriptionService.delete(id);
     }
 
     @GetMapping(value = "/subscription/{id}")

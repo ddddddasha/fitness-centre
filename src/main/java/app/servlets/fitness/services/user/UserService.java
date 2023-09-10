@@ -8,18 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+
     UserResponse create(UserRequest userRequest);
-
     List<UserResponse> read();
-
     UserResponse update(Long id, UserRequest userRequest);
-
-    boolean delete(Long id);
-
+    void delete(Long id);
     UserResponse findUserById(Long id);
-
     Optional<User> findUserByIdForPurchase(Long id);
-
     UserResponse findUserByLogin(String login);
-
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping(value = "/user")
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/user/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return userService.delete(id);
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }
