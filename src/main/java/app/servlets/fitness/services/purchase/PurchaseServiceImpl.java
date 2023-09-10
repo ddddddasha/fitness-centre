@@ -56,7 +56,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Override
     @Transactional
-    public PurchaseResponse update(Long id, PurchaseRequest purchaseRequest) { //НЕ ИЗМЕНЯЕТСЯ
+    public PurchaseResponse update(Long id, PurchaseRequest purchaseRequest) {
         Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(format(ERROR_SEARCH_PURCHASE_EXCEPTION, id)));
         purchaseMapper.updatePurchase(purchase, purchaseRequest);
