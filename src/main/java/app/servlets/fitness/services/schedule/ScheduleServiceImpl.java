@@ -1,6 +1,5 @@
 package app.servlets.fitness.services.schedule;
 
-
 import app.servlets.fitness.dto.schedule.ScheduleResponse;
 import app.servlets.fitness.feignClient.ScheduleClient;
 import lombok.RequiredArgsConstructor;
