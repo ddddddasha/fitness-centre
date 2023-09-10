@@ -58,7 +58,7 @@ public class PurchaseServiceImplTest {
     @ParameterizedTest
     @DisplayName("save purchase")
     @ArgumentsSource(PurchaseSaveArguments.class)
-    void createSubscriptionTest(PurchaseRequest purchaseRequest, Purchase purchase, PurchaseResponse expectedPurchaseResponse, User user, Subscription subscription) {
+    void createPurchaseTest(PurchaseRequest purchaseRequest, Purchase purchase, PurchaseResponse expectedPurchaseResponse, User user, Subscription subscription) {
         when(userService.findUserByIdForPurchase(any(Long.class))).thenReturn(Optional.of(user));
         when(subscriptionService.findSubscriptionByIdForPurchase(any(Long.class))).thenReturn(Optional.of(subscription));
         when(purchaseRepository.save(any(Purchase.class))).thenReturn(purchase);
